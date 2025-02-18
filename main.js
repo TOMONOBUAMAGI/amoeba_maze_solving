@@ -1,3 +1,4 @@
+// ゲームウィンドウのサイズ
 const WIDTH = 960;
 const HEIGHT = 640;
 
