@@ -1,3 +1,6 @@
+const WIDTH = 960;
+const HEIGHT = 640;
+
 // phina.js をグローバル領域に展開
 phina.globalize();
 
@@ -13,7 +16,11 @@ phina.define('MainScene', {
   superClass: 'DisplayScene',
   // 初期設定
   init: function() {
-    this.superInit();
+    this.superInit({
+      width: WIDTH,
+      height: HEIGHT,
+    });
+
     // 背景色を指定
     this.backgroundColor = '#EEEEEE';
     // 操作する円を配置
@@ -64,8 +71,8 @@ phina.define('MainScene', {
 phina.main(function() {
   // アプリケーション生成
   var app = GameApp({
-    width: 500,
-    height: 500,
+    width: WIDTH,
+    height: HEIGHT,
     query: "#game-canvas", // id属性に 'game-canvas'を持つcanvasタグに描画する
     startLabel: 'main', // メインシーンから開始する
     fit: false, // HTML内に固定する
