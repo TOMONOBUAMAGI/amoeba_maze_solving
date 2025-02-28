@@ -1,21 +1,24 @@
 // ゲームウィンドウのサイズ
-const WIDTH = 960;
-const HEIGHT = 640;
+const WIDTH = 375;
+const HEIGHT = 350;
 
-// phina.js をグローバル領域に展開
+// 壁のサイズ
+const wallSize = 16;
+
+// プレイヤー速さ
+const SPEED = 5;
+
+// 迷路サイズ
+const mazeWidth = 21;
+const mazeHeight = 21;
+
 phina.globalize();
 
-const SPEED = 10;
-const mazeWidth = 25;
-const mazeHeight = 13;
-
 let mazeArray = ConstructMaze();
-
-console.log(mazeArray);
+let wallArray = []; // 当たり判定用
 
 phina.define('MainScene', {
   superClass: 'DisplayScene',
-  // 初期設定
   init: function() {
     this.superInit({
       width: WIDTH,
@@ -25,43 +28,55 @@ phina.define('MainScene', {
     // 背景色を指定
     this.backgroundColor = '#EEEEEE';
     // 操作する円を配置
-    this.myCircle = MyCircle(10, 10).addChildTo(this);
+    var myCircle = MyCircle(43, 35).addChildTo(this);
     // 青い壁を配置
-    this.wall = Wall(200, 200).addChildTo(this);
-  },
-
-  // フレーム毎の処理
-  update: function(app) {
-    var key = app.keyboard;
-    var myCircle = this.myCircle;
-    var wall = this.wall;
-
-    var nextMyCircleX = myCircle.x;
-    var nextMyCircleY = myCircle.y;
-
-    if (key.getKey('left')) {
-      nextMyCircleX -= SPEED;
+    for (let i = 0; i < mazeWidth; i++) {
+      for (let j = 0; j < mazeHeight; j++) {
+        if (mazeArray[i][j]) {
+          wallArray.push(Wall(28+wallSize*i, 20+wallSize*j).addChildTo(this));
+        }
+      }
     }
 
-    if (key.getKey('right')) {
-      nextMyCircleX += SPEED;
-    }
+    // 当たり判定で使用
+    const wallCount = wallArray.length;
 
-    if (key.getKey('up')) {
-      nextMyCircleY -= SPEED;
-    }
+    // フレーム毎の処理
+    this.update = function(app) {
+      var key = app.keyboard;
 
-    if (key.getKey('down')) {
-      nextMyCircleY += SPEED;
-    }
+      var nextMyCircleX = myCircle.x;
+      var nextMyCircleY = myCircle.y;
 
-    var nextMyCircle = MyCircle(nextMyCircleX, nextMyCircleY);
+      if (key.getKey('left')) {
+        nextMyCircleX -= SPEED;
+      }
 
-    // 移動先が壁の内部だった場合移動させない
-    if (wall.hitTestElement(nextMyCircle)) {
-      return true;
-    }
-    else {
+      if (key.getKey('right')) {
+        nextMyCircleX += SPEED;
+      }
+
+      if (key.getKey('up')) {
+        nextMyCircleY -= SPEED;
+      }
+
+      if (key.getKey('down')) {
+        nextMyCircleY += SPEED;
+      }
+
+      // 当たり判定
+      var nextMyCircle = MyCircle(nextMyCircleX, nextMyCircleY);
+
+      for(let i = 0; i < wallCount; i++) {
+        if (wallArray[i].hitTestElement(nextMyCircle)) {
+          return null; // 移動先が壁だったらupdate終了 次のフレームへ（移動しない）
+        }
+        else {
+          continue;
+        }
+      }
+
+      // 座標更新
       myCircle.x = nextMyCircleX;
       myCircle.y = nextMyCircleY;
     }

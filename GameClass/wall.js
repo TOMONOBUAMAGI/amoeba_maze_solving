@@ -6,8 +6,8 @@ phina.define("Wall", {
     this.superInit();
     this.x = init_x;
     this.y = init_y;
-    this.fill = "blue";
-    this.width = 150;
-    this.height = 50;
+    this.fill = "black";
+    this.width = wallSize;
+    this.height = wallSize;
   }
 });

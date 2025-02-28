@@ -7,6 +7,6 @@ phina.define("MyCircle", {
     this.x = init_x;
     this.y = init_y;
     this.fill = "red";
-    this.radius = 10; // 半径
+    this.radius = 4; // 半径
   }
 });
