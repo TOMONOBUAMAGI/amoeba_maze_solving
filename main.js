@@ -12,8 +12,6 @@ const SPEED = 5;
 const mazeWidth = 21;
 const mazeHeight = 21;
 
-phina.globalize();
-
 let mazeArray = ConstructMaze();
 let wallArray = []; // 当たり判定用
 
