@@ -27,7 +27,7 @@ phina.define('MainScene', {
     this.backgroundColor = '#EEEEEE';
     // 操作する円を配置
     var myCircle = MyCircle(43, 35).addChildTo(this);
-    // 青い壁を配置
+    // 壁を配置
     for (let i = 0; i < mazeWidth; i++) {
       for (let j = 0; j < mazeHeight; j++) {
         if (mazeArray[i][j]) {
