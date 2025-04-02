@@ -33,3 +33,23 @@ function ConstructMaze() {
 
   return returnArray;
 }
+
+function judgeNode(mazeArray) {
+  let returnArray = [];
+  for (let y = 0; y < mazeHeight; y++) {
+    for (let x = 0; x < mazeWidth; x++) {
+      if(mazeArray[y][x]) continue;
+
+      upperCell = mazeArray[y-1][x];
+      lowerCell = mazeArray[y+1][x];
+      leftCell = mazeArray[y][x-1];
+      rightCell = mazeArray[y][x+1];
+
+      if(!(upperCell && lowerCell && !leftCell && !rightCell || !upperCell && !lowerCell && leftCell && rightCell)) {
+        returnArray.push([x, y]);
+      }
+    }
+  }
+
+  return returnArray;
+}

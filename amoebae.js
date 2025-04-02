@@ -2,22 +2,16 @@ const amoebaeCanvas = document.querySelector('#amoebae-canvas');
 // キャンパスに描画するためのCanvasRenderingContext2Dオブジェクトを取得するメソッド
 // 二次元グラフィックを描画するために2dの指定
 const ctx = amoebaeCanvas.getContext('2d');
-let x = amoebaeCanvas.width / 2;
-let y = amoebaeCanvas.height - 30;
-let dx = 5;
-let dy = 2;
-let radius = 20;
-let af;
+let nodeArray = judgeNode(mazeArray);
 
-//----- ボールの描画 -----//
 function drawWall() {
   // 新しいパスを作成する際の先頭を指定
   ctx.beginPath();
 
-  for (let i = 0; i < mazeWidth; i++) {
-    for (let j = 0; j < mazeHeight; j++) {
-      if (mazeArray[i][j]) {
-        ctx.rect(28+wallSize*i, 10+wallSize*j, wallSize, wallSize);
+  for (let y = 0; y < mazeWidth; y++) {
+    for (let x = 0; x < mazeHeight; x++) {
+      if (mazeArray[y][x]) {
+        ctx.rect(28+wallSize*x, 10+wallSize*y, wallSize, wallSize);
       }
     }
   }
@@ -29,3 +23,10 @@ function drawWall() {
 }
 
 drawWall();
+
+ctx.beginPath();
+nodeArray.forEach(position => {
+  ctx.rect(28+wallSize*position[0], 10+wallSize*position[1], 5, 5);
+});
+ctx.fillStyle = "#FF0000";
+ctx.fill();

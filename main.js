@@ -28,10 +28,10 @@ phina.define('MainScene', {
     // 操作する円を配置
     var myCircle = MyCircle(43, 35).addChildTo(this);
     // 壁を配置
-    for (let i = 0; i < mazeWidth; i++) {
-      for (let j = 0; j < mazeHeight; j++) {
-        if (mazeArray[i][j]) {
-          wallArray.push(Wall(28+wallSize*i, 20+wallSize*j).addChildTo(this));
+    for (let y = 0; y < mazeWidth; y++) {
+      for (let x = 0; x < mazeHeight; x++) {
+        if (mazeArray[y][x]) {
+          wallArray.push(Wall(28+wallSize*x, 20+wallSize*y).addChildTo(this));
         }
       }
     }
