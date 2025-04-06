@@ -35,25 +35,30 @@ function ConstructMaze() {
 }
 
 function judgeNodeEdge(mazeArray) {
-  let returnArray = Array(mazeHeight).fill(null).map(() => new Array(mazeWidth).fill(-1));
+  let judgedArray = Array(mazeHeight).fill(null).map(() => new Array(mazeWidth).fill(-1));
+  let nodeArray = [];
+  let nodeId = 0;
+
   for (let y = 0; y < mazeHeight; y++) {
     for (let x = 0; x < mazeWidth; x++) {
       if(mazeArray[y][x]) continue; // 壁なら飛ばす
 
-      upperCell = mazeArray[y-1][x];
-      lowerCell = mazeArray[y+1][x];
-      leftCell = mazeArray[y][x-1];
-      rightCell = mazeArray[y][x+1];
+      var upperCell = mazeArray[y-1][x];
+      var lowerCell = mazeArray[y+1][x];
+      var leftCell = mazeArray[y][x-1];
+      var rightCell = mazeArray[y][x+1];
 
       if(upperCell && lowerCell && !leftCell && !rightCell) {
-        returnArray[y][x] = 1; // 横方向エッジ
+        judgedArray[y][x] = [1, -1]; // 横方向エッジ
       } else if(!upperCell && !lowerCell && leftCell && rightCell) {
-        returnArray[y][x] = 2; // 縦方向エッジ
+        judgedArray[y][x] = [2, -1]; // 縦方向エッジ
       } else {
-        returnArray[y][x] = 0; // ノード
+        judgedArray[y][x] = [0, nodeId]; // ノード
+        nodeArray.push(new Node(nodeId));
+        nodeId++;
       }
     }
   }
 
-  return returnArray;
+  return [judgedArray, nodeArray];
 }
