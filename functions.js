@@ -34,19 +34,23 @@ function ConstructMaze() {
   return returnArray;
 }
 
-function judgeNode(mazeArray) {
-  let returnArray = [];
+function judgeNodeEdge(mazeArray) {
+  let returnArray = Array(mazeHeight).fill(null).map(() => new Array(mazeWidth).fill(-1));
   for (let y = 0; y < mazeHeight; y++) {
     for (let x = 0; x < mazeWidth; x++) {
-      if(mazeArray[y][x]) continue;
+      if(mazeArray[y][x]) continue; // 壁なら飛ばす
 
       upperCell = mazeArray[y-1][x];
       lowerCell = mazeArray[y+1][x];
       leftCell = mazeArray[y][x-1];
       rightCell = mazeArray[y][x+1];
 
-      if(!(upperCell && lowerCell && !leftCell && !rightCell || !upperCell && !lowerCell && leftCell && rightCell)) {
-        returnArray.push([x, y]);
+      if(upperCell && lowerCell && !leftCell && !rightCell) {
+        returnArray[y][x] = 1; // 横方向エッジ
+      } else if(!upperCell && !lowerCell && leftCell && rightCell) {
+        returnArray[y][x] = 2; // 縦方向エッジ
+      } else {
+        returnArray[y][x] = 0; // ノード
       }
     }
   }
