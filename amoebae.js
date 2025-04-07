@@ -76,6 +76,8 @@ for (let y = 0; y < mazeHeight; y++) {
   }
 }
 
+nodeArray = nodeBFS(nodeArray);
+
 console.log(nodeArray);
 
 ctx.fillStyle = "#FF0000";

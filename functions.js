@@ -34,6 +34,7 @@ function ConstructMaze() {
   return returnArray;
 }
 
+// 各マスについて、ノードかエッジかを判定
 function judgeNodeEdge(mazeArray) {
   let judgedArray = Array(mazeHeight).fill(null).map(() => new Array(mazeWidth).fill(-1));
   let nodeArray = [];
@@ -61,4 +62,32 @@ function judgeNodeEdge(mazeArray) {
   }
 
   return [judgedArray, nodeArray];
+}
+
+// sourceからの最短距離を幅優先探索で算出
+function nodeBFS(nodeArray) {
+  let visitingNodes = new Set([nodeArray[0]]); // ループで訪れるノードの候補を入れる配列
+  let visited = new Set(); // 既に訪れたノードを入れる配列
+  let distanceFromSource = 0;
+
+  while(visited.size < nodeArray.length) { // 全てのノードを探索するまで繰り返し
+    let nextVisitingNodes = new Set();
+
+    visitingNodes.forEach(node => {
+
+      if(!visited.has(node.id)) {
+        node.distanceFromSource = distanceFromSource; // sourceからの最短距離を記録
+        visited.add(node.id);
+
+        for (const linkedNodeId of node.linkedNodeIds) {
+          nextVisitingNodes.add(nodeArray[linkedNodeId]);
+        }
+      }
+    });
+
+    visitingNodes = nextVisitingNodes;
+    distanceFromSource++;
+  }
+
+  return nodeArray;
 }
