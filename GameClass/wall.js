@@ -1,13 +1,26 @@
 phina.define("Wall", {
-  // RectangleShapeクラス(長方形を描画するクラス)を継承
-  superClass: "RectangleShape",
+  superClass: "DisplayElement",
 
   init: function(init_x, init_y) {
     this.superInit();
     this.x = init_x;
     this.y = init_y;
-    this.fill = "black";
-    this.width = wallSize;
-    this.height = wallSize;
+
+    // 外枠の長方形
+    this.outerRect = RectangleShape({
+      width: wallSize,
+      height: wallSize,
+      fill: "black", //壁の色
+      stroke: null,
+    }).addChildTo(this);
+
+    // 内枠の長方形（外枠の内部に配置）
+    this.innerRect = RectangleShape({
+      width: wallSize * 0.9,  
+      height: wallSize * 0.9,
+      fill: "rgba(255, 255, 255, 0)",
+      stroke: "grey",  // 外枠の色
+      strokeWidth: wallSize * 0.1,
+    }).addChildTo(this);
   }
 });

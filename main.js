@@ -7,6 +7,7 @@ const wallSize = 16;
 
 // プレイヤー速さ,wallSizeとおなじ
 const SPEED = 16;
+const myCircle_radius = 6;
 
 // 迷路サイズ
 const mazeWidth = 21;
@@ -26,9 +27,9 @@ phina.define('MainScene', {
     // 背景色を指定
     this.backgroundColor = '#EEEEEE';
     // 操作する円を配置
-    var myCircle = MyCircle(43, 35).addChildTo(this);
-    // 軌跡を描画するためのTrailインスタンスを作成
-    var trail = Trail(myCircle.x, myCircle.y).addChildTo(this);
+    var myCircle = MyCircle(28+wallSize, 20+wallSize).addChildTo(this);
+    // 軌跡を描画するためのTrailインスタンスを格納する配列
+    this.trails = [];
 
     // 青い壁を配置
     for (let i = 0; i < mazeWidth; i++) {
@@ -45,9 +46,14 @@ phina.define('MainScene', {
     // キーの状態を保持する変数
     var moveDirection = { x: 0, y: 0 };
 
+    // プレイヤーの前回の位置
+    var lastPosition = { x: myCircle.x, y: myCircle.y };
+
     // setInterval で移動処理を呼び出す
     var moveInterval = setInterval(() => {
       if (moveDirection.x !== 0 || moveDirection.y !== 0) {
+        // デバッグ用
+        console.log("Player Position:", myCircle.x, myCircle.y);
         // 移動先の座標を計算
         var nextMyCircleX = myCircle.x + moveDirection.x * SPEED;
         var nextMyCircleY = myCircle.y + moveDirection.y * SPEED;
@@ -57,7 +63,8 @@ phina.define('MainScene', {
 
         var canMove = true;
         for (let i = 0; i < wallCount; i++) {
-          if (wallArray[i].hitTestElement(nextMyCircle)) {
+          if (checkCollision(nextMyCircle, wallArray[i])) {
+            console.log("Collision Detected!");
             canMove = false; // 壁に当たる場合は移動できない
             break;
           }
@@ -65,13 +72,30 @@ phina.define('MainScene', {
 
         // 移動可能な場合のみ座標を更新
         if (canMove) {
+
+          var isExsistTrail = false;
+          // 移動先にTrailがあるか
+          for (let i = 0; i < this.trails.length; i++) {
+            let trail = this.trails[i];
+            if (trail.x === nextMyCircleX && trail.y === nextMyCircleY) {
+              isExsistTrail = true;
+              trail.remove();
+              this.trails.splice(i, 1); // 配列からも削除
+              break; // 一度見つけたら削除して終了
+            }
+          }
+
+          if (!isExsistTrail) {
+            // 前回の位置に新しいTrailを描画
+            var newTrail = Trail(lastPosition.x, lastPosition.y).addChildTo(this);
+            this.trails.push(newTrail);
+          }
+
           myCircle.x = nextMyCircleX;
           myCircle.y = nextMyCircleY;
+          // プレイヤーの新しい位置を記録
+          lastPosition = { x: myCircle.x, y: myCircle.y };
         }
-
-        // 軌跡を描画
-        trail.x = myCircle.x;
-        trail.y = myCircle.y;
       }
     }, 150); // 150ms ごとに移動更新
 
