@@ -1,3 +1,6 @@
+import { judgeNodeEdge, nodeBFS, mazeArray, getBetweenness } from './functions.js';
+import { wallSize, mazeWidth, mazeHeight } from './global.js';
+
 const amoebaeCanvas = document.querySelector('#amoebae-canvas');
 // キャンパスに描画するためのCanvasRenderingContext2Dオブジェクトを取得するメソッド
 // 二次元グラフィックを描画するために2dの指定
@@ -7,6 +10,7 @@ let judgedNodeEdge = judgeNodeEdge(mazeArray);
 let judgedArray = judgedNodeEdge[0];
 let nodeArray = judgedNodeEdge[1];
 let edgeArray = [];
+let mazeGraph = judgedNodeEdge[2];
 
 function drawWall() {
   // 新しいパスを作成する際の先頭を指定
@@ -54,6 +58,7 @@ for (let y = 0; y < mazeHeight; y++) {
 
       nodeArray[leftNodeId].linkedNodeIds.push(rightNodeId);
       nodeArray[rightNodeId].linkedNodeIds.push(leftNodeId);
+      mazeGraph.addEdge(String(rightNodeId), String(leftNodeId));
     }
 
     else if(judgedArray[y][x][0] == 2) { // 縦エッジの場合
@@ -72,13 +77,13 @@ for (let y = 0; y < mazeHeight; y++) {
 
       nodeArray[upperNodeId].linkedNodeIds.push(lowerNodeId);
       nodeArray[lowerNodeId].linkedNodeIds.push(upperNodeId);
+      mazeGraph.addEdge(String(lowerNodeId), String(upperNodeId));
     }
   }
 }
 
 nodeArray = nodeBFS(nodeArray);
-
-console.log(nodeArray);
+console.log(getBetweenness(mazeGraph));
 
 ctx.fillStyle = "#FF0000";
 ctx.fill();

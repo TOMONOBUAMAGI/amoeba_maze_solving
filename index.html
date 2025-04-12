@@ -5,20 +5,20 @@
     <meta name="viewport" content="width=device-width, user-scalable=no" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <title>phina test</title>
-    <script src="https://cdn.jsdelivr.net/npm/phina.js@0.2.3/build/phina.min.js"></script>
   </head>
   <body>
     <div style="height: 100px; width: 100%;"></div>
     <div style="display: flex; justify-content: center;">
-      <canvas id="game-canvas"></canvas>
-      <canvas id="amoebae-canvas" width="375" height="350"></canvas>
+      <iframe
+        src="game.html"
+        width="400"
+        height="375"
+        style="border: 1px solid #ccc;"
+      >
+      </iframe>
+      <canvas id="amoebae-canvas" width="375" height="350" style="max-height: 350px;"></canvas>
     </div>
-    <script src='phina_globalize.js'></script>
-    <script src='GameClass/my_circle.js'></script>
-    <script src='GameClass/wall.js'></script>
     <script src='GameClass/node.js'></script>
-    <script src='functions.js'></script>
-    <script src='main.js'></script>
-    <script src='amoebae.js'></script>
+    <script type="module" src='amoebae.js'></script>
   </body>
 </html>

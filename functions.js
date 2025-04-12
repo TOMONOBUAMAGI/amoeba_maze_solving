@@ -1,3 +1,7 @@
+import Graph from 'https://esm.sh/graphology';
+import betweenness from 'https://esm.sh/graphology-metrics/centrality/betweenness';
+import { mazeWidth, mazeHeight } from './global.js';
+
 // 迷路ランダム生成
 function ConstructMaze() {
   let returnArray = Array(mazeHeight).fill(null).map(() => new Array(mazeWidth).fill(false));
@@ -35,10 +39,11 @@ function ConstructMaze() {
 }
 
 // 各マスについて、ノードかエッジかを判定
-function judgeNodeEdge(mazeArray) {
+export function judgeNodeEdge(mazeArray) {
   let judgedArray = Array(mazeHeight).fill(null).map(() => new Array(mazeWidth).fill(-1));
   let nodeArray = [];
   let nodeId = 0;
+  let graph = new Graph(); // betweennessで媒介中心性を求めるためにgraphologyのオブジェクトを生成
 
   for (let y = 0; y < mazeHeight; y++) {
     for (let x = 0; x < mazeWidth; x++) {
@@ -56,16 +61,17 @@ function judgeNodeEdge(mazeArray) {
       } else {
         judgedArray[y][x] = [0, nodeId]; // ノード
         nodeArray.push(new Node(nodeId));
+        graph.addNode(String(nodeId));
         nodeId++;
       }
     }
   }
 
-  return [judgedArray, nodeArray];
+  return [judgedArray, nodeArray, graph];
 }
 
 // sourceからの最短距離を幅優先探索で算出
-function nodeBFS(nodeArray) {
+export function nodeBFS(nodeArray) {
   let visitingNodes = new Set([nodeArray[0]]); // ループで訪れるノードの候補を入れる配列
   let visited = new Set(); // 既に訪れたノードを入れる配列
   let distanceFromSource = 0;
@@ -91,3 +97,9 @@ function nodeBFS(nodeArray) {
 
   return nodeArray;
 }
+
+export function getBetweenness(mazeGraph) {
+  return betweenness(mazeGraph);
+}
+
+export const mazeArray = ConstructMaze();

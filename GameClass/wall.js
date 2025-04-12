@@ -1,3 +1,5 @@
+import { wallSize } from '../global.js';
+
 phina.define("Wall", {
   // RectangleShapeクラス(長方形を描画するクラス)を継承
   superClass: "RectangleShape",

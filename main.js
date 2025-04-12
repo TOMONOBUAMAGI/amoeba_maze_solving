@@ -1,18 +1,6 @@
-// ゲームウィンドウのサイズ
-const WIDTH = 375;
-const HEIGHT = 350;
+import { mazeArray } from './functions.js';
+import { WIDTH, HEIGHT, wallSize, SPEED, mazeWidth, mazeHeight } from './global.js';
 
-// 壁のサイズ
-const wallSize = 16;
-
-// プレイヤー速さ
-const SPEED = 5;
-
-// 迷路サイズ
-const mazeWidth = 21;
-const mazeHeight = 21;
-
-let mazeArray = ConstructMaze();
 let wallArray = []; // 当たり判定用
 
 phina.define('MainScene', {
