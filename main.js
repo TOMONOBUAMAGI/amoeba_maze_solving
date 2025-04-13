@@ -49,8 +49,23 @@ phina.define('MainScene', {
     // プレイヤーの前回の位置
     var lastPosition = { x: myCircle.x, y: myCircle.y };
 
-    // setInterval で移動処理を呼び出す
-    var moveInterval = setInterval(() => {
+    // フレーム毎の処理 (キー入力の監視)
+    this.update = function(app) {
+      var key = app.keyboard;
+
+      // 移動方向を更新
+      if (key.getKeyDown('left')) {
+        moveDirection = { x: -1, y: 0 }; // 左方向
+      } else if (key.getKeyDown('right')) {
+        moveDirection = { x: 1, y: 0 }; // 右方向
+      } else if (key.getKeyDown('up')) {
+        moveDirection = { x: 0, y: -1 }; // 上方向
+      } else if (key.getKeyDown('down')) {
+        moveDirection = { x: 0, y: 1 }; // 下方向
+      } else {
+        moveDirection = { x: 0, y: 0 };
+      }
+
       if (moveDirection.x !== 0 || moveDirection.y !== 0) {
         // デバッグ用
         console.log("Player Position:", myCircle.x, myCircle.y);
@@ -96,24 +111,6 @@ phina.define('MainScene', {
           // プレイヤーの新しい位置を記録
           lastPosition = { x: myCircle.x, y: myCircle.y };
         }
-      }
-    }, 150); // 150ms ごとに移動更新
-
-    // フレーム毎の処理 (キー入力の監視)
-    this.update = function(app) {
-      var key = app.keyboard;
-
-      // 移動方向を更新
-      if (key.getKey('left')) {
-        moveDirection = { x: -1, y: 0 }; // 左方向
-      } else if (key.getKey('right')) {
-        moveDirection = { x: 1, y: 0 }; // 右方向
-      } else if (key.getKey('up')) {
-        moveDirection = { x: 0, y: -1 }; // 上方向
-      } else if (key.getKey('down')) {
-        moveDirection = { x: 0, y: 1 }; // 下方向
-      } else {
-        moveDirection = { x: 0, y: 0 };
       }
     }
   }
