@@ -16,7 +16,7 @@ phina.define("Wall", {
 
     // 内枠の長方形（外枠の内部に配置）
     this.innerRect = RectangleShape({
-      width: wallSize * 0.9,  
+      width: wallSize * 0.9,
       height: wallSize * 0.9,
       fill: "rgba(255, 255, 255, 0)",
       stroke: "grey",  // 外枠の色
