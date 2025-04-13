@@ -70,6 +70,30 @@ export function judgeNodeEdge(mazeArray) {
   return [judgedArray, nodeArray, graph];
 }
 
+// 円と矩形の衝突判定
+export function checkCollision(circle, wall) {
+  var circleX = circle.x;
+  var circleY = circle.y;
+  var radius = circle.circleShape.radius;
+
+  var rectX = wall.x - wall.outerRect.width / 2;
+  var rectY = wall.y - wall.outerRect.height / 2;
+  var rectWidth = wall.outerRect.width;
+  var rectHeight = wall.outerRect.height;
+
+  // 最も近い矩形の端を求める
+  var closestX = Math.max(rectX, Math.min(circleX, rectX + rectWidth));
+  var closestY = Math.max(rectY, Math.min(circleY, rectY + rectHeight));
+
+  // その点と円の中心との距離を計算
+  var dx = circleX - closestX;
+  var dy = circleY - closestY;
+  var distance = Math.sqrt(dx * dx + dy * dy);
+
+  // 円の半径と距離が一致したら衝突
+  return distance < radius;
+}
+
 // sourceからの最短距離を幅優先探索で算出
 export function nodeBFS(nodeArray) {
   let visitingNodes = new Set([nodeArray[0]]); // ループで訪れるノードの候補を入れる配列

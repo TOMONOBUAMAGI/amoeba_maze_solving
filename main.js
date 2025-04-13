@@ -1,4 +1,4 @@
-import { mazeArray } from './functions.js';
+import { mazeArray, checkCollision } from './functions.js';
 import { WIDTH, HEIGHT, wallSize, SPEED, mazeWidth, mazeHeight } from './global.js';
 
 let wallArray = []; // 当たり判定用
@@ -14,7 +14,10 @@ phina.define('MainScene', {
     // 背景色を指定
     this.backgroundColor = '#EEEEEE';
     // 操作する円を配置
-    var myCircle = MyCircle(43, 35).addChildTo(this);
+    var myCircle = MyCircle(28+wallSize, 20+wallSize).addChildTo(this);
+    // 軌跡を描画するためのTrailインスタンスを格納する配列
+    this.trails = [];
+
     // 壁を配置
     for (let y = 0; y < mazeWidth; y++) {
       for (let x = 0; x < mazeHeight; x++) {
@@ -27,44 +30,72 @@ phina.define('MainScene', {
     // 当たり判定で使用
     const wallCount = wallArray.length;
 
-    // フレーム毎の処理
+    // キーの状態を保持する変数
+    var moveDirection = { x: 0, y: 0 };
+
+    // プレイヤーの前回の位置
+    var lastPosition = { x: myCircle.x, y: myCircle.y };
+
+    // フレーム毎の処理 (キー入力の監視)
     this.update = function(app) {
       var key = app.keyboard;
 
-      var nextMyCircleX = myCircle.x;
-      var nextMyCircleY = myCircle.y;
-
-      if (key.getKey('left')) {
-        nextMyCircleX -= SPEED;
+      // 移動方向を更新
+      if (key.getKeyDown('left')) {
+        moveDirection = { x: -1, y: 0 }; // 左方向
+      } else if (key.getKeyDown('right')) {
+        moveDirection = { x: 1, y: 0 }; // 右方向
+      } else if (key.getKeyDown('up')) {
+        moveDirection = { x: 0, y: -1 }; // 上方向
+      } else if (key.getKeyDown('down')) {
+        moveDirection = { x: 0, y: 1 }; // 下方向
+      } else {
+        moveDirection = { x: 0, y: 0 };
       }
 
-      if (key.getKey('right')) {
-        nextMyCircleX += SPEED;
-      }
+      if (moveDirection.x !== 0 || moveDirection.y !== 0) {
+        // 移動先の座標を計算
+        var nextMyCircleX = myCircle.x + moveDirection.x * SPEED;
+        var nextMyCircleY = myCircle.y + moveDirection.y * SPEED;
 
-      if (key.getKey('up')) {
-        nextMyCircleY -= SPEED;
-      }
+        // 当たり判定
+        var nextMyCircle = MyCircle(nextMyCircleX, nextMyCircleY);
 
-      if (key.getKey('down')) {
-        nextMyCircleY += SPEED;
-      }
-
-      // 当たり判定
-      var nextMyCircle = MyCircle(nextMyCircleX, nextMyCircleY);
-
-      for(let i = 0; i < wallCount; i++) {
-        if (wallArray[i].hitTestElement(nextMyCircle)) {
-          return null; // 移動先が壁だったらupdate終了 次のフレームへ（移動しない）
+        var canMove = true;
+        for (let i = 0; i < wallCount; i++) {
+          if (checkCollision(nextMyCircle, wallArray[i])) {
+            canMove = false; // 壁に当たる場合は移動できない
+            break;
+          }
         }
-        else {
-          continue;
+
+        // 移動可能な場合のみ座標を更新
+        if (canMove) {
+
+          var isExsistTrail = false;
+          // 移動先にTrailがあるか
+          for (let i = 0; i < this.trails.length; i++) {
+            let trail = this.trails[i];
+            if (trail.x === nextMyCircleX && trail.y === nextMyCircleY) {
+              isExsistTrail = true;
+              trail.remove();
+              this.trails.splice(i, 1); // 配列からも削除
+              break; // 一度見つけたら削除して終了
+            }
+          }
+
+          if (!isExsistTrail) {
+            // 前回の位置に新しいTrailを描画
+            var newTrail = Trail(lastPosition.x, lastPosition.y).addChildTo(this);
+            this.trails.push(newTrail);
+          }
+
+          myCircle.x = nextMyCircleX;
+          myCircle.y = nextMyCircleY;
+          // プレイヤーの新しい位置を記録
+          lastPosition = { x: myCircle.x, y: myCircle.y };
         }
       }
-
-      // 座標更新
-      myCircle.x = nextMyCircleX;
-      myCircle.y = nextMyCircleY;
     }
   }
 });
