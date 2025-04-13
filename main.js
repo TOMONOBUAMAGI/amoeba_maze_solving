@@ -31,7 +31,7 @@ phina.define('MainScene', {
     // 軌跡を描画するためのTrailインスタンスを格納する配列
     this.trails = [];
 
-    // 青い壁を配置
+    // 壁を配置
     for (let i = 0; i < mazeWidth; i++) {
       for (let j = 0; j < mazeHeight; j++) {
         if (mazeArray[i][j]) {
@@ -67,8 +67,6 @@ phina.define('MainScene', {
       }
 
       if (moveDirection.x !== 0 || moveDirection.y !== 0) {
-        // デバッグ用
-        console.log("Player Position:", myCircle.x, myCircle.y);
         // 移動先の座標を計算
         var nextMyCircleX = myCircle.x + moveDirection.x * SPEED;
         var nextMyCircleY = myCircle.y + moveDirection.y * SPEED;
@@ -79,7 +77,6 @@ phina.define('MainScene', {
         var canMove = true;
         for (let i = 0; i < wallCount; i++) {
           if (checkCollision(nextMyCircle, wallArray[i])) {
-            console.log("Collision Detected!");
             canMove = false; // 壁に当たる場合は移動できない
             break;
           }
