@@ -1,4 +1,4 @@
-phina.define("Wall", {
+phina.define("Trail", {
   superClass: "DisplayElement",
 
   init: function(init_x, init_y) {
@@ -10,7 +10,7 @@ phina.define("Wall", {
     this.outerRect = RectangleShape({
       width: wallSize,
       height: wallSize,
-      fill: "black", //壁の色
+      fill: "rgba(0, 255, 0, 0.7)", //軌跡の色
       stroke: null,
     }).addChildTo(this);
 
