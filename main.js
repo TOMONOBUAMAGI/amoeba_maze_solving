@@ -106,7 +106,7 @@ phina.define('MainScene', {
           myCircle.y = nextMyCircleY;
           // プレイヤーの新しい位置を記録
           lastPosition = { x: myCircle.x, y: myCircle.y };
-          console.log(this.trails.length);
+
           //プレーヤーがゴールした時の移動距離の取得
           if(myCircle.x == 28+wallSize+18*wallSize && myCircle.y == 20+wallSize+18*wallSize){
             console.log(this.trails.length);
