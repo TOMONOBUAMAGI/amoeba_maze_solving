@@ -10,7 +10,7 @@ phina.define("Trail", {
     this.outerRect = RectangleShape({
       width: wallSize,
       height: wallSize,
-      fill: "rgba(0, 255, 0, 0.7)", //軌跡の色
+      fill: "rgba(255, 0, 0, 0.25)", //軌跡の色
       stroke: null,
     }).addChildTo(this);
 

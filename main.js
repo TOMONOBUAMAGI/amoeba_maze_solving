@@ -86,27 +86,31 @@ phina.define('MainScene', {
         if (canMove) {
 
           var isExsistTrail = false;
+          
           // 移動先にTrailがあるか
-          for (let i = 0; i < this.trails.length; i++) {
-            let trail = this.trails[i];
-            if (trail.x === nextMyCircleX && trail.y === nextMyCircleY) {
+          if (this.trails.length > 0) {
+            const lastTrail = this.trails[this.trails.length - 1];
+            if (lastTrail.x === nextMyCircleX && lastTrail.y === nextMyCircleY) {
+              lastTrail.remove();
+              this.trails.pop();
               isExsistTrail = true;
-              trail.remove();
-              this.trails.splice(i, 1); // 配列からも削除
-              break; // 一度見つけたら削除して終了
             }
           }
-
           if (!isExsistTrail) {
             // 前回の位置に新しいTrailを描画
             var newTrail = Trail(lastPosition.x, lastPosition.y).addChildTo(this);
             this.trails.push(newTrail);
           }
-
+          
           myCircle.x = nextMyCircleX;
           myCircle.y = nextMyCircleY;
           // プレイヤーの新しい位置を記録
           lastPosition = { x: myCircle.x, y: myCircle.y };
+          console.log(this.trails.length);
+          //プレーヤーがゴールした時の移動距離の取得
+          if(myCircle.x == 28+wallSize+18*wallSize && myCircle.y == 20+wallSize+18*wallSize){
+            console.log(this.trails.length);
+          }
         }
       }
     }
