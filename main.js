@@ -72,20 +72,20 @@ phina.define('MainScene', {
 
         // 移動可能な場合のみ座標を更新
         if (canMove) {
+          var isNewArea = true;
 
-          var isExsistTrail = false;
-          // 移動先にTrailがあるか
-          for (let i = 0; i < this.trails.length; i++) {
-            let trail = this.trails[i];
-            if (trail.x === nextMyCircleX && trail.y === nextMyCircleY) {
-              isExsistTrail = true;
-              trail.remove();
-              this.trails.splice(i, 1); // 配列からも削除
-              break; // 一度見つけたら削除して終了
+          // 移動先が直前にいた場所の場合
+          if (this.trails.length > 0) {
+            let lastTrail = this.trails[this.trails.length - 1];
+            if (lastTrail.x === nextMyCircleX && lastTrail.y === nextMyCircleY) {
+              lastTrail.remove(); // 移動先(直前)のtrailを画面から削除
+              this.trails.pop(); // 移動先(直前)のtrailを配列から削除
+              isNewArea = false;
             }
           }
 
-          if (!isExsistTrail) {
+          // 移動先が直前にいた場所でない場合
+          if (isNewArea) {
             // 前回の位置に新しいTrailを描画
             var newTrail = Trail(lastPosition.x, lastPosition.y).addChildTo(this);
             this.trails.push(newTrail);
@@ -95,6 +95,11 @@ phina.define('MainScene', {
           myCircle.y = nextMyCircleY;
           // プレイヤーの新しい位置を記録
           lastPosition = { x: myCircle.x, y: myCircle.y };
+
+          //プレーヤーがゴールした時の移動距離の取得
+          if(myCircle.x == 28+wallSize+18*wallSize && myCircle.y == 20+wallSize+18*wallSize){
+            console.log(this.trails.length);
+          }
         }
       }
     }
