@@ -84,24 +84,25 @@ phina.define('MainScene', {
 
         // 移動可能な場合のみ座標を更新
         if (canMove) {
+          var isNewArea = true;
 
-          var isExsistTrail = false;
-          
-          // 移動先にTrailがあるか
+          // 移動先が直前にいた場所の場合
           if (this.trails.length > 0) {
-            const lastTrail = this.trails[this.trails.length - 1];
+            let lastTrail = this.trails[this.trails.length - 1];
             if (lastTrail.x === nextMyCircleX && lastTrail.y === nextMyCircleY) {
-              lastTrail.remove();
-              this.trails.pop();
-              isExsistTrail = true;
+              lastTrail.remove(); // 移動先(直前)のtrailを画面から削除
+              this.trails.pop(); // 移動先(直前)のtrailを配列から削除
+              isNewArea = false;
             }
           }
-          if (!isExsistTrail) {
+
+          // 移動先が直前にいた場所でない場合
+          if (isNewArea) {
             // 前回の位置に新しいTrailを描画
             var newTrail = Trail(lastPosition.x, lastPosition.y).addChildTo(this);
             this.trails.push(newTrail);
           }
-          
+
           myCircle.x = nextMyCircleX;
           myCircle.y = nextMyCircleY;
           // プレイヤーの新しい位置を記録
