@@ -1,6 +1,7 @@
-import { mazeArray, checkCollision } from './functions.js';
+import { checkCollision } from './functions.js';
 import { WIDTH, HEIGHT, wallSize, SPEED, mazeWidth, mazeHeight } from './global.js';
 
+const mazeArray = window.mazeArray;
 let wallArray = []; // 当たり判定用
 
 phina.define('MainScene', {

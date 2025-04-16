@@ -1,4 +1,4 @@
-import { judgeNodeEdge, nodeBFS, mazeArray, getBetweenness } from './functions.js';
+import { judgeNodeEdge, nodeBFS, getBetweenness } from './functions.js';
 import { wallSize, mazeWidth, mazeHeight } from './global.js';
 
 const amoebaeCanvas = document.querySelector('#amoebae-canvas');
@@ -6,6 +6,7 @@ const amoebaeCanvas = document.querySelector('#amoebae-canvas');
 // 二次元グラフィックを描画するために2dの指定
 const ctx = amoebaeCanvas.getContext('2d');
 
+const mazeArray = window.mazeArray;
 let judgedNodeEdge = judgeNodeEdge(mazeArray);
 let judgedArray = judgedNodeEdge[0];
 let nodeArray = judgedNodeEdge[1];

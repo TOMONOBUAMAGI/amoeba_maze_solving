@@ -7,9 +7,22 @@
     <title>phina test</title>
   </head>
   <body>
+    <script type="module">
+      import { mazeArray } from './functions.js';
+      window.mazeArray = mazeArray;
+
+      const iframe = document.getElementById("game-iframe");
+      iframe.onload = function() {
+        iframe.contentWindow.postMessage({
+          type: 'maze-data',
+          maze: mazeArray
+        }, '*');
+      }
+    </script>
     <div style="height: 100px; width: 100%;"></div>
     <div style="display: flex; justify-content: center;">
       <iframe
+        id="game-iframe"
         src="game.html"
         width="400"
         height="375"
