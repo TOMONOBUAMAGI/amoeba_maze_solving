@@ -57,3 +57,11 @@ function checkCollision(circle, wall) {
   // 円の半径と距離が一致したら衝突
   return distance < radius;
 }
+
+// プレイヤー移動方向を外部ボタンで制御するためのグローバル変数
+let externalMoveDirection = { x: 0, y: 0 };
+
+// ボタンで方向セット
+function setMoveDirection(x, y) {
+  externalMoveDirection = { x, y };
+}

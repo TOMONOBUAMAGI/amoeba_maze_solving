@@ -18,5 +18,45 @@
     <script src='GameClass/my_circle.js'></script>
     <script src='functions.js'></script>
     <script src='main.js'></script>
+    
+    <div class="arrow-controls">
+      <div class="btn empty"></div>
+      <button class="btn" onclick="setMoveDirection(0, -1)">↑</button>
+      <div class="btn empty"></div>
+      <button class="btn" onclick="setMoveDirection(-1, 0)">←</button>
+      <div class="btn empty"></div>
+      <button class="btn" onclick="setMoveDirection(1, 0)">→</button>
+      <div class="btn empty"></div>
+      <button class="btn" onclick="setMoveDirection(0, 1)">↓</button>
+      <div class="btn empty"></div>
+    </div>
+    
+    <style>
+    .arrow-controls {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      display: grid;
+      grid-template-columns: 60px 60px 60px;
+      grid-template-rows: 60px 60px 60px;
+      gap: 5px;
+      z-index: 1000;
+    }
+    .btn {
+      background-color: #ddd;
+      border: 1px solid #aaa;
+      font-size: 24px;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 10px;
+    }
+    .empty {
+      background: none;
+      border: none;
+      pointer-events: none;
+    }
+    </style>
   </body>
 </html>
