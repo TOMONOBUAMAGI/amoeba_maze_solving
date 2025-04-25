@@ -1,22 +1,108 @@
 <!doctype html>
-<html>
-  <head>
-    <meta charset='utf-8' />
-    <meta name="viewport" content="width=device-width, user-scalable=no" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <title>phina test</title>
-    <script src="https://cdn.jsdelivr.net/npm/phina.js@0.2.3/build/phina.min.js"></script>
-  </head>
-  <body>
-    <div style="height: 100px; width: 100%;"></div>
-    <div style="text-align:center;">
-      <canvas id="game-canvas"></canvas>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <title>粘菌ゲーム</title>
+  <script src="https://cdn.jsdelivr.net/npm/phina.js@0.2.3/build/phina.min.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+      touch-action: manipulation;
+    }
+    
+    body {
+      margin: 0;
+      padding: 0;
+      background: #f5f5f5;
+      font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    }
+    
+    #game-container {
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 10px;
+    }
+    
+    #game-canvas {
+      width: 100%;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+      background: #fff;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    
+    .control-panel {
+      display: flex;
+      justify-content: center;
+      padding: 15px;
+    }
+    
+    .dpad {
+      display: grid;
+      grid-template-columns: repeat(3, 60px);
+      gap: 10px;
+    }
+    
+    .control-panel button {
+      width: 60px;
+      height: 60px;
+      border: none;
+      border-radius: 50%;
+      background: #000;
+      color: white;
+      font-size: 1.5rem;
+      box-shadow: 0 3px 5px rgba(0,0,0,0.2);
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+    
+    .control-panel button:active {
+      transform: scale(0.95);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+    
+    .header {
+      text-align: center;
+      padding: 15px;
+      background: #333;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>粘菌粘菌ねんきーーん</h1>
+  </div>
+
+  <div id="game-container">
+    <!-- ゲームの表示領域 -->
+    <canvas id="game-canvas"></canvas>
+    
+    <!-- 操作ボタン（十字キー型） -->
+    <div class="control-panel">
+      <div class="dpad">
+        <div></div>
+        <button id="move-up">↑</button>
+        <div></div>
+        <button id="move-left">←</button>
+        <div style="width:60px; height:60px;"></div>
+        <button id="move-right">→</button>
+        <div></div>
+        <button id="move-down">↓</button>
+        <div></div>
+      </div>
     </div>
-    <script src='phina_globalize.js'></script>
-    <script src='GameClass/trail.js'></script>
-    <script src='GameClass/wall.js'></script>
-    <script src='GameClass/my_circle.js'></script>
-    <script src='functions.js'></script>
-    <script src='main.js'></script>
-  </body>
+  </div>
+
+  <!-- スクリプト -->
+  <script src='phina_globalize.js'></script>
+  <script src='GameClass/trail.js'></script>
+  <script src='GameClass/wall.js'></script>
+  <script src='GameClass/my_circle.js'></script>
+  <script src='functions.js'></script>
+  <script src='main.js'></script>
+</body>
 </html>
