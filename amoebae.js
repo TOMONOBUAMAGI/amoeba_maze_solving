@@ -105,12 +105,14 @@ edgeArray.forEach(edge => {
 });
 
 // 隣接行列作成
-const incidenceMatrix =Array(edgeArray.length).fill(null).map(() => new Array(nodeArray.length).fill(0));
-incidenceMatrix.forEach( (row, edgeIndex) => {
+const incidenceArray =Array(edgeArray.length).fill(null).map(() => new Array(nodeArray.length).fill(0));
+incidenceArray.forEach( (row, edgeIndex) => {
   let edge = edgeArray[edgeIndex];
   row[edge.fromNodeId] = 1;
   row[edge.toNodeId] = -1;
 });
+
+const incidenceMatrix = math.matrix(incidenceArray);
 
 ctx.fillStyle = "#FF0000";
 ctx.fill();
