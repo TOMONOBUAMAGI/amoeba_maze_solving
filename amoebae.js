@@ -89,6 +89,7 @@ nodeArray = nodeBFS(nodeArray); // 各ノードの媒介中心性を計算
 
 const nodeBetweennessArray = getBetweenness(mazeGraph);
 
+// 隣接行列のためにエッジのfromノード, toノードを判定
 edgeArray.forEach(edge => {
   let beforeFromNodeId = edge.fromNodeId;
   let beforeToNodeId = edge.toNodeId;
@@ -101,6 +102,14 @@ edgeArray.forEach(edge => {
       edge.toNodeId = beforeFromNodeId;
     }
   }
+});
+
+// 隣接行列作成
+const incidenceMatrix =Array(edgeArray.length).fill(null).map(() => new Array(nodeArray.length).fill(0));
+incidenceMatrix.forEach( (row, edgeIndex) => {
+  let edge = edgeArray[edgeIndex];
+  row[edge.fromNodeId] = 1;
+  row[edge.toNodeId] = -1;
 });
 
 ctx.fillStyle = "#FF0000";
