@@ -33,7 +33,6 @@ function drawWall() {
 }
 
 drawWall();
-ctx.beginPath();
 
 for (let y = 0; y < mazeHeight; y++) {
   for (let x = 0; x < mazeWidth; x++) {
@@ -111,10 +110,15 @@ incidenceArray.forEach( (row, edgeIndex) => {
 
 const incidenceMatrix = math.matrix(incidenceArray);
 
-// ノード描画
-nodeArray.forEach(node => {
-  ctx.rect(node.x-2, node.y-2, 4, 4);
-});
+// エッジ描画
+ctx.strokeStyle = 'orange';
+edgeArray.forEach(edge => {
+  let fromNode = nodeArray[edge.fromNodeId];
+  let toNode = nodeArray[edge.toNodeId];
 
-ctx.fillStyle = "#FF0000";
-ctx.fill();
+  ctx.beginPath();
+  ctx.moveTo(fromNode.x, fromNode.y);
+  ctx.lineTo(toNode.x, toNode.y);
+  ctx.lineWidth = edge.thickness;
+  ctx.stroke();
+});

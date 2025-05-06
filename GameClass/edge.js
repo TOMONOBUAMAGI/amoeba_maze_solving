@@ -4,5 +4,6 @@ class Edge {
     this.fromNodeId = fromNodeId;
     this.toNodeId = toNodeId;
     this.length = length;
+    this.thickness = 4;
   }
 }
