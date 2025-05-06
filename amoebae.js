@@ -12,6 +12,7 @@ let nodeArray = judgedNodeEdge[1];
 let edgeArray = [];
 let mazeGraph = judgedNodeEdge[2];
 let edgeId = 0;
+let edgeLengthArray = [];
 
 function drawWall() {
   // 新しいパスを作成する際の先頭を指定
@@ -59,7 +60,7 @@ for (let y = 0; y < mazeHeight; y++) {
       nodeArray[leftNodeId].linkedNodeIds.push(rightNodeId);
       nodeArray[rightNodeId].linkedNodeIds.push(leftNodeId);
       mazeGraph.addEdge(String(rightNodeId), String(leftNodeId));
-      edgeArray[edgeId] = new Edge(edgeId, leftNodeId, rightNodeId);
+      edgeArray[edgeId] = new Edge(edgeId, leftNodeId, rightNodeId, edgeLength);
       edgeId++;
     }
 
@@ -80,7 +81,7 @@ for (let y = 0; y < mazeHeight; y++) {
       nodeArray[upperNodeId].linkedNodeIds.push(lowerNodeId);
       nodeArray[lowerNodeId].linkedNodeIds.push(upperNodeId);
       mazeGraph.addEdge(String(lowerNodeId), String(upperNodeId));
-      edgeArray[edgeId] = new Edge(edgeId, upperNodeId, lowerNodeId);
+      edgeArray[edgeId] = new Edge(edgeId, upperNodeId, lowerNodeId, edgeLength);
       edgeId++;
     }
   }
@@ -89,8 +90,9 @@ nodeArray = nodeBFS(nodeArray); // 各ノードの媒介中心性を計算
 
 const nodeBetweennessArray = getBetweenness(mazeGraph);
 
-// 隣接行列のためにエッジのfromノード, toノードを判定
+// 隣接行列のためにエッジのfromノード, toノードを判定, エッジの長さを配列に入れる
 edgeArray.forEach(edge => {
+  edgeLengthArray[edge.id] = edge.length;
   let beforeFromNodeId = edge.fromNodeId;
   let beforeToNodeId = edge.toNodeId;
   if (nodeArray[beforeFromNodeId].distanceFromSource > nodeArray[beforeToNodeId].distanceFromSource) {
