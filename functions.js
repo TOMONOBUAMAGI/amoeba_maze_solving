@@ -1,6 +1,6 @@
 import Graph from 'https://esm.sh/graphology';
 import betweenness from 'https://esm.sh/graphology-metrics/centrality/betweenness';
-import { mazeWidth, mazeHeight } from './global.js';
+import { mazeWidth, mazeHeight, wallSize } from './global.js';
 
 // 迷路ランダム生成
 function ConstructMaze() {
@@ -55,12 +55,12 @@ export function judgeNodeEdge(mazeArray) {
       var rightCell = mazeArray[y][x+1];
 
       if(upperCell && lowerCell && !leftCell && !rightCell) {
-        judgedArray[y][x] = [1, -1]; // 横方向エッジ
+        judgedArray[y][x] = [1, -1]; // 横方向エッジ 配列2番目の値はエッジid初期値
       } else if(!upperCell && !lowerCell && leftCell && rightCell) {
-        judgedArray[y][x] = [2, -1]; // 縦方向エッジ
+        judgedArray[y][x] = [2, -1]; // 縦方向エッジ 配列2番目の値はエッジid初期値
       } else {
         judgedArray[y][x] = [0, nodeId]; // ノード
-        nodeArray.push(new Node(nodeId));
+        nodeArray.push(new Node(nodeId, 28+wallSize*(x+0.5), 10+wallSize*(y+0.5)));
         graph.addNode(String(nodeId));
         nodeId++;
       }

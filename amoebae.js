@@ -37,13 +37,8 @@ ctx.beginPath();
 
 for (let y = 0; y < mazeHeight; y++) {
   for (let x = 0; x < mazeWidth; x++) {
-    // ノード描画
-    if(judgedArray[y][x][0] == 0) {
-      ctx.rect(28+wallSize*x+6, 10+wallSize*y+6, 4, 4);
-    }
-
     // 各ノードのソースからの距離を算出する幅優先探索のために、ノード同士の繋がりを調べる
-    else if(judgedArray[y][x][0] == 1) { // 横エッジの場合
+    if(judgedArray[y][x][0] == 1) { // 横エッジの場合
       let leftNodeId = judgedArray[y][x-1][1];
       let edgeLength = 0;
       while(true) {
@@ -115,6 +110,11 @@ incidenceArray.forEach( (row, edgeIndex) => {
 });
 
 const incidenceMatrix = math.matrix(incidenceArray);
+
+// ノード描画
+nodeArray.forEach(node => {
+  ctx.rect(node.x-2, node.y-2, 4, 4);
+});
 
 ctx.fillStyle = "#FF0000";
 ctx.fill();
