@@ -32,6 +32,20 @@ function drawWall() {
   ctx.fill();
 }
 
+function drawEdge(edgeArray) {
+  ctx.strokeStyle = 'orange'; // 色をオレンジに指定
+  edgeArray.forEach(edge => {
+    let fromNode = nodeArray[edge.fromNodeId];
+    let toNode = nodeArray[edge.toNodeId];
+
+    ctx.beginPath();
+    ctx.moveTo(fromNode.x, fromNode.y);
+    ctx.lineTo(toNode.x, toNode.y);
+    ctx.lineWidth = edge.thickness;
+    ctx.stroke();
+  });
+}
+
 drawWall();
 
 for (let y = 0; y < mazeHeight; y++) {
@@ -111,14 +125,4 @@ incidenceArray.forEach( (row, edgeIndex) => {
 const incidenceMatrix = math.matrix(incidenceArray);
 
 // エッジ描画
-ctx.strokeStyle = 'orange';
-edgeArray.forEach(edge => {
-  let fromNode = nodeArray[edge.fromNodeId];
-  let toNode = nodeArray[edge.toNodeId];
-
-  ctx.beginPath();
-  ctx.moveTo(fromNode.x, fromNode.y);
-  ctx.lineTo(toNode.x, toNode.y);
-  ctx.lineWidth = edge.thickness;
-  ctx.stroke();
-});
+drawEdge(edgeArray);
