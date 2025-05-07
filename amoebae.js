@@ -5,6 +5,8 @@ const amoebaeCanvas = document.querySelector('#amoebae-canvas');
 const amoebaeCanvasWidth = amoebaeCanvas.width;
 const amoebaeCanvasHeight = amoebaeCanvas.height;
 
+const initConductanceValue = 0.8;
+
 const ctx = amoebaeCanvas.getContext('2d');
 
 const mazeArray = window.mazeArray;
@@ -17,6 +19,10 @@ let edgeId = 0;
 let edgeLengthArray = [];
 
 let animationFrame;
+
+let conductanceMatrix; // コンダクタンス行列を扱う変数
+let beforePinv; // 疑似逆行列を求める行列を扱う変数
+let flowMatrix; // edgeの原形質流量を扱う変数
 
 function drawWall() {
   // 新しいパスを作成する際の先頭を指定
@@ -130,15 +136,13 @@ edgeArray.forEach(edge => {
   }
 });
 
-// 隣接行列作成
+// 隣接行列の基になる配列作成
 const incidenceArray =Array(edgeArray.length).fill(null).map(() => new Array(nodeArray.length).fill(0));
 incidenceArray.forEach( (row, edgeIndex) => {
   let edge = edgeArray[edgeIndex];
   row[edge.fromNodeId] = 1;
   row[edge.toNodeId] = -1;
 });
-
-const incidenceMatrix = math.matrix(incidenceArray);
 
 // canvasにマウスオーバーしているときだけアニメーションを読み込む
 amoebaeCanvas.addEventListener('mouseover', function (e) {
@@ -151,5 +155,21 @@ amoebaeCanvas.addEventListener('mouseout', function (e) {
   cancelAnimationFrame(animationFrame);
 });
 
+// ノードのsource/sink行列のための配列
+const sArray = Array(nodeArray.length).fill(0);
+sArray[0] = 1; // 迷路スタートノードはsource
+sArray[sArray.length - 1] = -1; // 迷路ゴールノードはsink
+
+const initConductanceArray = Array(edgeArray.length).fill(initConductanceValue);
+
+const incidenceMatrix = math.matrix(incidenceArray); // 隣接行列A edge数行node数列
+const sMatrix = math.matrix(sArray.map(x => [x])); // ノードのsource/sink行列s node数行1列
+const edgeLengthMatrix = math.matrix(math.diag(edgeLengthArray)); // エッジの長さ行列L edge数行 対角
+conductanceMatrix = math.matrix(math.diag(initConductanceArray)); // コンダクタンス行列D edge数行 対角
+
 // エッジ描画
 drawEdge(edgeArray);
+
+beforePinv = math.multiply(math.transpose(incidenceMatrix), conductanceMatrix, math.inv(edgeLengthMatrix), incidenceMatrix);
+
+flowMatrix = math.multiply(-1, conductanceMatrix, math.inv(edgeLengthMatrix), incidenceMatrix, math.pinv(beforePinv), sMatrix); // 流量ベクトル
