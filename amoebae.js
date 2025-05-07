@@ -2,6 +2,8 @@ import { judgeNodeEdge, nodeBFS, getBetweenness } from './functions.js';
 import { wallSize, mazeWidth, mazeHeight } from './global.js';
 
 const amoebaeCanvas = document.querySelector('#amoebae-canvas');
+const amoebaeCanvasWidth = amoebaeCanvas.width;
+const amoebaeCanvasHeight = amoebaeCanvas.height;
 
 const ctx = amoebaeCanvas.getContext('2d');
 
@@ -13,6 +15,8 @@ let edgeArray = [];
 let mazeGraph = judgedNodeEdge[2];
 let edgeId = 0;
 let edgeLengthArray = [];
+
+let animationFrame;
 
 function drawWall() {
   // 新しいパスを作成する際の先頭を指定
@@ -44,6 +48,18 @@ function drawEdge(edgeArray) {
     ctx.lineWidth = edge.thickness;
     ctx.stroke();
   });
+}
+
+function nextFrame() {
+  edgeArray.forEach(edge => {
+    edge.thickness = edge.thickness * 0.9;
+  });
+
+  ctx.clearRect(0, 0, amoebaeCanvasWidth, amoebaeCanvasHeight);
+  drawWall();
+  drawEdge(edgeArray);
+
+  animationFrame = requestAnimationFrame(nextFrame);
 }
 
 drawWall();
@@ -123,6 +139,17 @@ incidenceArray.forEach( (row, edgeIndex) => {
 });
 
 const incidenceMatrix = math.matrix(incidenceArray);
+
+// canvasにマウスオーバーしているときだけアニメーションを読み込む
+amoebaeCanvas.addEventListener('mouseover', function (e) {
+  // 繰り返し処理開始
+  animationFrame = requestAnimationFrame(nextFrame);
+});
+
+amoebaeCanvas.addEventListener('mouseout', function (e) {
+  // 繰り返し処理の停止
+  cancelAnimationFrame(animationFrame);
+});
 
 // エッジ描画
 drawEdge(edgeArray);
