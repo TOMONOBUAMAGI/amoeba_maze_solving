@@ -23,7 +23,6 @@ let conductanceMatrix; // コンダクタンス対角行列を扱う変数 流�
 let conductanceVector; // コンダクタンスベクトルを扱う変数
 let beforePinv; // 疑似逆行列を求める行列を扱う変数
 let flowVector; // edgeの原形質流量ベクトル
-let flowArray;
 
 let growVector; // エッジ成長項行列
 let shrinkVector; // エッジ減衰項行列
@@ -67,20 +66,18 @@ function nextFrame() {
   // 流量計算
   beforePinv = math.multiply(math.transpose(incidenceMatrix), conductanceMatrix, math.inv(edgeLengthMatrix), incidenceMatrix);
   flowVector = math.multiply(-1, conductanceMatrix, math.inv(edgeLengthMatrix), incidenceMatrix, math.pinv(beforePinv), sMatrix); // 流量ベクトル
-
-  flowArray = flowVector.toArray().map(row => row[0]);
-  flowVector = math.matrix(flowArray);
-
+  flowVector = math.transpose(flowVector);
   // 成長項、減衰項計算
   growVector = math.map(flowVector, (flow) => sigmoidFunc(flow)); // 成長項
   shrinkVector = math.multiply(conductanceVector, gamma); // 減衰項
   growAndShrinkVector = math.subtract(growVector, shrinkVector);
   conductanceVector = math.add(conductanceVector, math.multiply(growAndShrinkVector, dt));
-  // コンダクタンスが負の場合は0に置き換える
+
+  // コンダクタンスが 1.0e-06の場合は1.0e-07に置き換える
   conductanceVector = math.map(conductanceVector, (conductance) => conductance < 1.0e-06 ? 1.0e-07 : conductance);
 
   // 対角行列用配列を作成
-  conductanceArray = conductanceVector.toArray();
+  conductanceArray = conductanceVector.toArray()[0];
 
   setThickness(edgeArray, conductanceArray);
 
@@ -188,7 +185,7 @@ conductanceArray = Array(edgeArray.length).fill(initConductanceValue);
 const incidenceMatrix = math.matrix(incidenceArray); // 隣接行列A edge数行node数列
 const sMatrix = math.matrix(sArray.map(x => [x])); // ノードのsource/sink行列s node数行1列
 const edgeLengthMatrix = math.matrix(math.diag(edgeLengthArray)); // エッジの長さ行列L edge数行 対角
-conductanceVector = math.matrix(conductanceArray);
+conductanceVector = math.matrix([conductanceArray]);
 
 // エッジ太さ更新
 setThickness(edgeArray, conductanceArray);
