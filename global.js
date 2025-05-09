@@ -12,8 +12,8 @@ export const myCircleRadius = 6;
 export const SPEED = 16;
 
 // 迷路サイズ
-export const mazeWidth = 17;
-export const mazeHeight = 17;
+export const mazeWidth = 19;
+export const mazeHeight = 19;
 
 // シミュレーション用パラメータ
 export const dt = 1;

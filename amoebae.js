@@ -110,7 +110,7 @@ for (let y = 0; y < mazeHeight; y++) {
       nodeArray[leftNodeId].linkedNodeIds.push(rightNodeId);
       nodeArray[rightNodeId].linkedNodeIds.push(leftNodeId);
       mazeGraph.addEdge(String(rightNodeId), String(leftNodeId));
-      edgeArray[edgeId] = new Edge(edgeId, leftNodeId, rightNodeId, edgeLength);
+      edgeArray[edgeId] = new Edge(edgeId, leftNodeId, rightNodeId, edgeLength+1); //
       edgeId++;
     }
 
@@ -131,7 +131,7 @@ for (let y = 0; y < mazeHeight; y++) {
       nodeArray[upperNodeId].linkedNodeIds.push(lowerNodeId);
       nodeArray[lowerNodeId].linkedNodeIds.push(upperNodeId);
       mazeGraph.addEdge(String(lowerNodeId), String(upperNodeId));
-      edgeArray[edgeId] = new Edge(edgeId, upperNodeId, lowerNodeId, edgeLength);
+      edgeArray[edgeId] = new Edge(edgeId, upperNodeId, lowerNodeId, edgeLength+1);
       edgeId++;
     }
   }
