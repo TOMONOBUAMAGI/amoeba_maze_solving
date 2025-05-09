@@ -1,6 +1,6 @@
 import Graph from 'https://esm.sh/graphology';
 import betweenness from 'https://esm.sh/graphology-metrics/centrality/betweenness';
-import { mazeWidth, mazeHeight, wallSize } from './global.js';
+import { mazeWidth, mazeHeight, wallSize, qH, mu } from './global.js';
 
 // 迷路ランダム生成
 function ConstructMaze() {
@@ -124,6 +124,18 @@ export function nodeBFS(nodeArray) {
 
 export function getBetweenness(mazeGraph) {
   return betweenness(mazeGraph);
+}
+
+export function sigmoidFunc(flow) {
+  let abs_flow = Math.abs(flow)
+  let powed_flow = (abs_flow / qH) ** mu;
+  return powed_flow / (1 + powed_flow);
+}
+
+export function setThickness(edgeArray, conductanceArray) {
+  edgeArray.forEach( (edge, i) => {
+    edge.thickness = conductanceArray[i] ** 0.25;
+  });
 }
 
 export const mazeArray = ConstructMaze();

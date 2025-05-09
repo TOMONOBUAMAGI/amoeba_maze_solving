@@ -1,11 +1,9 @@
-import { judgeNodeEdge, nodeBFS, getBetweenness } from './functions.js';
-import { wallSize, mazeWidth, mazeHeight } from './global.js';
+import { judgeNodeEdge, nodeBFS, getBetweenness, sigmoidFunc, setThickness } from './functions.js';
+import { wallSize, mazeWidth, mazeHeight, initConductanceValue, edgeDrawRatio, dt, gamma } from './global.js';
 
 const amoebaeCanvas = document.querySelector('#amoebae-canvas');
 const amoebaeCanvasWidth = amoebaeCanvas.width;
 const amoebaeCanvasHeight = amoebaeCanvas.height;
-
-const initConductanceValue = 0.8;
 
 const ctx = amoebaeCanvas.getContext('2d');
 
@@ -20,9 +18,16 @@ let edgeLengthArray = [];
 
 let animationFrame;
 
-let conductanceMatrix; // コンダクタンス行列を扱う変数
+let conductanceArray; // コンダクタンスを扱う配列 edge太さ更新用&対角行列作成用
+let conductanceMatrix; // コンダクタンス対角行列を扱う変数 流量計算用
+let conductanceVector; // コンダクタンスベクトルを扱う変数
 let beforePinv; // 疑似逆行列を求める行列を扱う変数
-let flowMatrix; // edgeの原形質流量を扱う変数
+let flowVector; // edgeの原形質流量ベクトル
+let flowArray;
+
+let growVector; // エッジ成長項行列
+let shrinkVector; // エッジ減衰項行列
+let growAndShrinkVector; // 成長項と減衰項の和を入れる行列
 
 function drawWall() {
   // 新しいパスを作成する際の先頭を指定
@@ -51,15 +56,33 @@ function drawEdge(edgeArray) {
     ctx.beginPath();
     ctx.moveTo(fromNode.x, fromNode.y);
     ctx.lineTo(toNode.x, toNode.y);
-    ctx.lineWidth = edge.thickness;
+    ctx.lineWidth = edge.thickness * edgeDrawRatio;
     ctx.stroke();
   });
 }
 
 function nextFrame() {
-  edgeArray.forEach(edge => {
-    edge.thickness = edge.thickness * 0.9;
-  });
+  conductanceMatrix = math.matrix(math.diag(conductanceArray)); // コンダクタンス行列D edge数行 対角 流量計算用
+
+  // 流量計算
+  beforePinv = math.multiply(math.transpose(incidenceMatrix), conductanceMatrix, math.inv(edgeLengthMatrix), incidenceMatrix);
+  flowVector = math.multiply(-1, conductanceMatrix, math.inv(edgeLengthMatrix), incidenceMatrix, math.pinv(beforePinv), sMatrix); // 流量ベクトル
+
+  flowArray = flowVector.toArray().map(row => row[0]);
+  flowVector = math.matrix(flowArray);
+
+  // 成長項、減衰項計算
+  growVector = math.map(flowVector, (flow) => sigmoidFunc(flow)); // 成長項
+  shrinkVector = math.multiply(conductanceVector, gamma); // 減衰項
+  growAndShrinkVector = math.subtract(growVector, shrinkVector);
+  conductanceVector = math.add(conductanceVector, math.multiply(growAndShrinkVector, dt));
+  // コンダクタンスが負の場合は0に置き換える
+  conductanceVector = math.map(conductanceVector, (conductance) => conductance < 1.0e-06 ? 1.0e-07 : conductance);
+
+  // 対角行列用配列を作成
+  conductanceArray = conductanceVector.toArray();
+
+  setThickness(edgeArray, conductanceArray);
 
   ctx.clearRect(0, 0, amoebaeCanvasWidth, amoebaeCanvasHeight);
   drawWall();
@@ -160,16 +183,15 @@ const sArray = Array(nodeArray.length).fill(0);
 sArray[0] = 1; // 迷路スタートノードはsource
 sArray[sArray.length - 1] = -1; // 迷路ゴールノードはsink
 
-const initConductanceArray = Array(edgeArray.length).fill(initConductanceValue);
+conductanceArray = Array(edgeArray.length).fill(initConductanceValue);
 
 const incidenceMatrix = math.matrix(incidenceArray); // 隣接行列A edge数行node数列
 const sMatrix = math.matrix(sArray.map(x => [x])); // ノードのsource/sink行列s node数行1列
 const edgeLengthMatrix = math.matrix(math.diag(edgeLengthArray)); // エッジの長さ行列L edge数行 対角
-conductanceMatrix = math.matrix(math.diag(initConductanceArray)); // コンダクタンス行列D edge数行 対角
+conductanceVector = math.matrix(conductanceArray);
+
+// エッジ太さ更新
+setThickness(edgeArray, conductanceArray);
 
 // エッジ描画
 drawEdge(edgeArray);
-
-beforePinv = math.multiply(math.transpose(incidenceMatrix), conductanceMatrix, math.inv(edgeLengthMatrix), incidenceMatrix);
-
-flowMatrix = math.multiply(-1, conductanceMatrix, math.inv(edgeLengthMatrix), incidenceMatrix, math.pinv(beforePinv), sMatrix); // 流量ベクトル
