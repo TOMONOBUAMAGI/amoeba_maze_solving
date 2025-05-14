@@ -1,7 +1,8 @@
 import { judgeNodeEdge, nodeBFS, getBetweenness, sigmoidFunc, setThickness } from './functions.js';
-import { wallSize, mazeWidth, mazeHeight, initConductanceValue, edgeDrawRatio, dt, gamma } from './global.js';
+import { wallSize, mazeWidth, mazeHeight, initConductanceValue, edgeDrawRatio, dt, gamma, maxFrameCount } from './global.js';
 
 const amoebaeCanvas = document.querySelector('#amoebae-canvas');
+const simulationStartBtn = document.querySelector('#simulation-start-button')
 const amoebaeCanvasWidth = amoebaeCanvas.width;
 const amoebaeCanvasHeight = amoebaeCanvas.height;
 
@@ -27,6 +28,8 @@ let flowVector; // edgeの原形質流量ベクトル
 let growVector; // エッジ成長項行列
 let shrinkVector; // エッジ減衰項行列
 let growAndShrinkVector; // 成長項と減衰項の和を入れる行列
+
+let frameCount;
 
 function drawWall() {
   // 新しいパスを作成する際の先頭を指定
@@ -61,6 +64,9 @@ function drawEdge(edgeArray) {
 }
 
 function nextFrame() {
+  if(frameCount >= maxFrameCount) return;
+
+  frameCount++;
   conductanceMatrix = math.matrix(math.diag(conductanceArray)); // コンダクタンス行列D edge数行 対角 流量計算用
 
   // 流量計算
@@ -87,6 +93,13 @@ function nextFrame() {
 
   animationFrame = requestAnimationFrame(nextFrame);
 }
+
+// ボタンクリックでシミュレーション開始
+simulationStartBtn.addEventListener('click', function (e) {
+  e.target.disabled = true;
+  // 繰り返し処理開始
+  animationFrame = requestAnimationFrame(nextFrame);
+});
 
 drawWall();
 
@@ -164,17 +177,6 @@ incidenceArray.forEach( (row, edgeIndex) => {
   row[edge.toNodeId] = -1;
 });
 
-// canvasにマウスオーバーしているときだけアニメーションを読み込む
-amoebaeCanvas.addEventListener('mouseover', function (e) {
-  // 繰り返し処理開始
-  animationFrame = requestAnimationFrame(nextFrame);
-});
-
-amoebaeCanvas.addEventListener('mouseout', function (e) {
-  // 繰り返し処理の停止
-  cancelAnimationFrame(animationFrame);
-});
-
 // ノードのsource/sink行列のための配列
 const sArray = Array(nodeArray.length).fill(0);
 sArray[0] = 1; // 迷路スタートノードはsource
@@ -192,3 +194,5 @@ setThickness(edgeArray, conductanceArray);
 
 // エッジ描画
 drawEdge(edgeArray);
+
+frameCount = 0;

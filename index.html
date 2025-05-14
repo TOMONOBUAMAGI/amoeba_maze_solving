@@ -6,6 +6,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <title>phina test</title>
     <script src="https://cdn.jsdelivr.net/npm/mathjs@11.11.1/lib/browser/math.js"></script>
+    <link rel="stylesheet" href="style.css">
   </head>
   <body>
     <script type="module">
@@ -30,7 +31,10 @@
         style="border: 1px solid #ccc;"
       >
       </iframe>
-      <canvas id="amoebae-canvas" width="375" height="350" style="max-height: 350px;"></canvas>
+      <div id="amoebae-simulation">
+        <canvas id="amoebae-canvas" width="375" height="350" style="max-height: 350px;"></canvas>
+        <button id="simulation-start-button">Start</button>
+      </div>
     </div>
     <script src='GameClass/edge.js'></script>
     <script src='GameClass/node.js'></script>
