@@ -1,12 +1,12 @@
 import { judgeNodeEdge, nodeBFS, getBetweenness, sigmoidFunc, setThickness } from './functions.js';
 import { wallSize, mazeWidth, mazeHeight, initConductanceValue, edgeDrawRatio, dt, gamma, maxFrameCount } from './global.js';
 
-const amoebaeCanvas = document.querySelector('#amoebae-canvas');
+const slimeCanvas = document.querySelector('#slime-canvas');
 const simulationStartBtn = document.querySelector('#simulation-start-button')
-const amoebaeCanvasWidth = amoebaeCanvas.width;
-const amoebaeCanvasHeight = amoebaeCanvas.height;
+const slimeCanvasWidth = slimeCanvas.width;
+const slimeCanvasHeight = slimeCanvas.height;
 
-const ctx = amoebaeCanvas.getContext('2d');
+const ctx = slimeCanvas.getContext('2d');
 
 const mazeArray = window.mazeArray;
 let judgedNodeEdge = judgeNodeEdge(mazeArray);
@@ -87,7 +87,7 @@ function nextFrame() {
 
   setThickness(edgeArray, conductanceArray);
 
-  ctx.clearRect(0, 0, amoebaeCanvasWidth, amoebaeCanvasHeight);
+  ctx.clearRect(0, 0, slimeCanvasWidth, slimeCanvasHeight);
   drawWall();
   drawEdge(edgeArray);
 

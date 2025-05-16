@@ -1,4 +1,4 @@
-#amoebae-simulation {
+#slime-simulation {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -19,4 +19,8 @@
 
 #simulation-start-button:not(:disabled) {
   cursor: pointer;
+}
+
+#simulation-start-button:disabled {
+  cursor: not-allowed;
 }

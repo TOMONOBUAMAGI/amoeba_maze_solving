@@ -6,9 +6,6 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <title>phina test</title>
     <script src="https://cdn.jsdelivr.net/npm/mathjs@11.11.1/lib/browser/math.js"></script>
-    <link rel="stylesheet" href="style.css">
-  </head>
-  <body>
     <script type="module">
       import { mazeArray } from './functions.js';
       window.mazeArray = mazeArray;
@@ -21,7 +18,9 @@
         }, '*');
       }
     </script>
-    <div style="height: 100px; width: 100%;"></div>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
     <div style="display: flex; justify-content: center;">
       <iframe
         id="game-iframe"
@@ -31,13 +30,13 @@
         style="border: 1px solid #ccc;"
       >
       </iframe>
-      <div id="amoebae-simulation">
-        <canvas id="amoebae-canvas" width="375" height="350" style="max-height: 350px;"></canvas>
+      <div id="slime-simulation">
+        <canvas id="slime-canvas" width="375" height="350" style="max-height: 350px;"></canvas>
         <button id="simulation-start-button">Start</button>
       </div>
     </div>
     <script src='GameClass/edge.js'></script>
     <script src='GameClass/node.js'></script>
-    <script type="module" src='amoebae.js'></script>
+    <script type="module" src='slime.js'></script>
   </body>
 </html>
