@@ -21,15 +21,17 @@
     <link rel="stylesheet" href="style.css">
   </head>
   <body>
-    <div style="display: flex; justify-content: center;">
-      <iframe
-        id="game-iframe"
-        src="game.html"
-        width="400"
-        height="375"
-        style="border: 1px solid #ccc;"
-      >
-      </iframe>
+    <div style="display: flex; justify-content: center; flex-direction: column;">
+      <div style="display: flex; justify-content: center;">
+        <iframe
+          id="game-iframe"
+          src="game.html"
+          width="400"
+          height="375"
+          style="border: 1px solid #ccc;"
+        >
+        </iframe>
+      </div>
       <div id="slime-simulation">
         <canvas id="slime-canvas" width="375" height="350" style="max-height: 350px;"></canvas>
         <button id="simulation-start-button">Start</button>

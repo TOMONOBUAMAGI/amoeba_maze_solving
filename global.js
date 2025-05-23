@@ -17,7 +17,7 @@ export const mazeHeight = 19;
 
 // シミュレーション用パラメータ
 export const dt = 1;
-export const qH = 0.5;
+export const qH = 1;
 export const mu = 1.5;
 export const gamma = 0.3;
 
