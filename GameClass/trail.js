@@ -1,3 +1,5 @@
+import { wallSize } from '../global.js';
+
 phina.define("Trail", {
   superClass: "DisplayElement",
 

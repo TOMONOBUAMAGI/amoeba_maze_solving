@@ -5,18 +5,40 @@
     <meta name="viewport" content="width=device-width, user-scalable=no" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <title>phina test</title>
-    <script src="https://cdn.jsdelivr.net/npm/phina.js@0.2.3/build/phina.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjs@11.11.1/lib/browser/math.js"></script>
+    <script type="module">
+      import { mazeArray } from './functions.js';
+      window.mazeArray = mazeArray;
+
+      const iframe = document.getElementById("game-iframe");
+      iframe.onload = function() {
+        iframe.contentWindow.postMessage({
+          type: 'maze-data',
+          maze: mazeArray
+        }, '*');
+      }
+    </script>
+    <link rel="stylesheet" href="style.css">
   </head>
   <body>
-    <div style="height: 100px; width: 100%;"></div>
-    <div style="text-align:center;">
-      <canvas id="game-canvas"></canvas>
+    <div style="display: flex; justify-content: center; flex-direction: column;">
+      <div style="display: flex; justify-content: center;">
+        <iframe
+          id="game-iframe"
+          src="game.html"
+          width="400"
+          height="375"
+          style="border: 1px solid #ccc;"
+        >
+        </iframe>
+      </div>
+      <div id="slime-simulation">
+        <canvas id="slime-canvas" width="375" height="350" style="max-height: 350px;"></canvas>
+        <button id="simulation-start-button">Start</button>
+      </div>
     </div>
-    <script src='phina_globalize.js'></script>
-    <script src='GameClass/trail.js'></script>
-    <script src='GameClass/wall.js'></script>
-    <script src='GameClass/my_circle.js'></script>
-    <script src='functions.js'></script>
-    <script src='main.js'></script>
+    <script src='GameClass/edge.js'></script>
+    <script src='GameClass/node.js'></script>
+    <script type="module" src='slime.js'></script>
   </body>
 </html>

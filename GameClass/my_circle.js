@@ -1,3 +1,5 @@
+import { myCircleRadius } from '../global.js';
+
 phina.define("MyCircle", {
   superClass: "DisplayElement",
 
@@ -7,7 +9,7 @@ phina.define("MyCircle", {
     this.y = init_y;
 
     this.circleShape = CircleShape({
-      radius: myCircle_radius,
+      radius: myCircleRadius,
       fill: "red",
     }).addChildTo(this);
   }

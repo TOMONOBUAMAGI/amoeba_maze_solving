@@ -1,19 +1,7 @@
-// ゲームウィンドウのサイズ
-const WIDTH = 375;
-const HEIGHT = 350;
+import { checkCollision } from './functions.js';
+import { WIDTH, HEIGHT, wallSize, SPEED, mazeWidth, mazeHeight } from './global.js';
 
-// 壁のサイズ
-const wallSize = 16;
-
-// プレイヤー速さ,wallSizeとおなじ
-const SPEED = 16;
-const myCircle_radius = 6;
-
-// 迷路サイズ
-const mazeWidth = 21;
-const mazeHeight = 21;
-
-let mazeArray = ConstructMaze();
+const mazeArray = window.mazeArray;
 let wallArray = []; // 当たり判定用
 
 phina.define('MainScene', {
@@ -32,10 +20,10 @@ phina.define('MainScene', {
     this.trails = [];
 
     // 壁を配置
-    for (let i = 0; i < mazeWidth; i++) {
-      for (let j = 0; j < mazeHeight; j++) {
-        if (mazeArray[i][j]) {
-          wallArray.push(Wall(28+wallSize*i, 20+wallSize*j).addChildTo(this));
+    for (let y = 0; y < mazeWidth; y++) {
+      for (let x = 0; x < mazeHeight; x++) {
+        if (mazeArray[y][x]) {
+          wallArray.push(Wall(28+wallSize*x, 20+wallSize*y).addChildTo(this));
         }
       }
     }
