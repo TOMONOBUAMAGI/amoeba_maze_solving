@@ -1,6 +1,6 @@
 // ゲームウィンドウのサイズ
-export const WIDTH = 375;
-export const HEIGHT = 350;
+export const WIDTH = 345;
+export const HEIGHT = 320;
 
 // 壁のサイズ
 export const wallSize = 16;

@@ -50,6 +50,10 @@ phina.define('MainScene', {
         moveDirection = { x: 0, y: -1 }; // 上方向
       } else if (key.getKeyDown('down')) {
         moveDirection = { x: 0, y: 1 }; // 下方向
+      } else if (externalMoveDirection.x !== 0 || externalMoveDirection.y !== 0) {
+        // 外部ボタン指示
+        moveDirection = { x: externalMoveDirection.x, y: externalMoveDirection.y };
+        externalMoveDirection = { x: 0, y: 0 }; // 一度使ったらリセット
       } else {
         moveDirection = { x: 0, y: 0 };
       }
