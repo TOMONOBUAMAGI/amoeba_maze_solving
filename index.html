@@ -11,7 +11,7 @@
       window.mazeArray = mazeArray;
 
       const iframe = document.getElementById("game-iframe");
-      iframe.onload = function() {
+      window.onload = function() {
         iframe.contentWindow.postMessage({
           type: 'maze-data',
           maze: mazeArray
