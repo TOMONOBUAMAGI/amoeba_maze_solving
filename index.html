@@ -18,22 +18,22 @@
     <script src='GameClass/my_circle.js'></script>
     <script src='functions.js'></script>
     <script src='main.js'></script>
-    
+
+    <div id="button-region" style="display: flex; justify-content: center;">
     <div class="arrow-controls">
       <div class="btn empty"></div>
-      <button class="btn" onclick="setMoveDirection(0, -1)">↑</button>
+      <button class="btn operate-btn" onclick="setMoveDirection(0, -1)">↑</button>
       <div class="btn empty"></div>
-      <button class="btn" onclick="setMoveDirection(-1, 0)">←</button>
+      <button class="btn operate-btn" onclick="setMoveDirection(-1, 0)">←</button>
       <div class="btn empty"></div>
-      <button class="btn" onclick="setMoveDirection(1, 0)">→</button>
+      <button class="btn operate-btn" onclick="setMoveDirection(1, 0)">→</button>
       <div class="btn empty"></div>
-      <button class="btn" onclick="setMoveDirection(0, 1)">↓</button>
+      <button class="btn operate-btn" onclick="setMoveDirection(0, 1)">↓</button>
       <div class="btn empty"></div>
     </div>
-    
+
     <style>
     .arrow-controls {
-      position: fixed;
       bottom: 20px;
       right: 20px;
       display: grid;
@@ -51,6 +51,13 @@
       justify-content: center;
       align-items: center;
       border-radius: 10px;
+    }
+    .btn.operate-btn:hover {
+      background-color: #CCDDEE;
+    }
+    .btn.operate-btn:active {
+      transform: scale(0.95);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
     }
     .empty {
       background: none;
