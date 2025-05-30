@@ -4,15 +4,6 @@
   <meta charset="utf-8" />
   <title>Phina Game</title>
   <script src="https://cdn.jsdelivr.net/npm/phina.js@0.2.3/build/phina.min.js"></script>
-  <script>
-    // プレイヤー移動方向を外部ボタンで制御するためのグローバル変数
-    let externalMoveDirection = { x: 0, y: 0 };
-
-    // ボタンで方向セット
-    function setMoveDirection(x, y) {
-      externalMoveDirection = { x, y };
-    }
-  </script>
   <style>
     .arrow-controls {
       bottom: 20px;
@@ -53,13 +44,13 @@
     <div id="button-region" style="display: flex; justify-content: center;">
       <div class="arrow-controls">
         <div class="btn empty"></div>
-        <button class="btn operate-btn" onclick="setMoveDirection(0, -1)">↑</button>
+        <button class="btn operate-btn" id="up-btn">↑</button>
         <div class="btn empty"></div>
-        <button class="btn operate-btn" onclick="setMoveDirection(-1, 0)">←</button>
+        <button class="btn operate-btn" id="left-btn">←</button>
         <div class="btn empty"></div>
-        <button class="btn operate-btn" onclick="setMoveDirection(1, 0)">→</button>
+        <button class="btn operate-btn" id="right-btn">→</button>
         <div class="btn empty"></div>
-        <button class="btn operate-btn" onclick="setMoveDirection(0, 1)">↓</button>
+        <button class="btn operate-btn" id="down-btn">↓</button>
         <div class="btn empty"></div>
       </div>
     </div>
@@ -69,8 +60,10 @@
   <script src="GameClass/my_circle.js" type="module"></script>
   <script src="GameClass/wall.js" type="module"></script>
   <script src='GameClass/trail.js' type="module"></script>
-  <script>
-    window.addEventListener('message', (event) => {
+  <script type="module">
+    import { setMoveDirection } from './functions.js';
+
+     window.addEventListener('message', (event) => {
       if (event.data.type === 'maze-data') {
         window.mazeArray = event.data.maze;
 
@@ -81,6 +74,13 @@
         document.body.appendChild(script);
       }
     });
+
+    window.onload = function() {
+      document.getElementById("up-btn").onclick = function() {setMoveDirection(0, -1)};
+      document.getElementById("right-btn").onclick = function() {setMoveDirection(1, 0)};
+      document.getElementById("down-btn").onclick = function() {setMoveDirection(0, 1)};
+      document.getElementById("left-btn").onclick = function() {setMoveDirection(-1, 0)};
+    }
   </script>
 </body>
 </html>

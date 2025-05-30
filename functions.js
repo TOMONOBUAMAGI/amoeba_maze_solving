@@ -139,3 +139,11 @@ export function setThickness(edgeArray, conductanceArray) {
 }
 
 export const mazeArray = ConstructMaze();
+
+// プレイヤー移動方向を外部ボタンで制御するためのグローバル変数
+export let externalMoveDirection = { x: 0, y: 0 };
+
+// ボタンで方向セット
+export function setMoveDirection(x, y) {
+  externalMoveDirection = { x, y };
+}

@@ -1,4 +1,4 @@
-import { checkCollision } from './functions.js';
+import { checkCollision, externalMoveDirection, setMoveDirection } from './functions.js';
 import { WIDTH, HEIGHT, wallSize, SPEED, mazeWidth, mazeHeight } from './global.js';
 
 const mazeArray = window.mazeArray;
@@ -39,21 +39,11 @@ phina.define('MainScene', {
 
     // フレーム毎の処理 (キー入力の監視)
     this.update = function(app) {
-      var key = app.keyboard;
-
       // 移動方向を更新
-      if (key.getKeyDown('left')) {
-        moveDirection = { x: -1, y: 0 }; // 左方向
-      } else if (key.getKeyDown('right')) {
-        moveDirection = { x: 1, y: 0 }; // 右方向
-      } else if (key.getKeyDown('up')) {
-        moveDirection = { x: 0, y: -1 }; // 上方向
-      } else if (key.getKeyDown('down')) {
-        moveDirection = { x: 0, y: 1 }; // 下方向
-      } else if (externalMoveDirection.x !== 0 || externalMoveDirection.y !== 0) {
+      if (externalMoveDirection.x !== 0 || externalMoveDirection.y !== 0) {
         // 外部ボタン指示
         moveDirection = { x: externalMoveDirection.x, y: externalMoveDirection.y };
-        externalMoveDirection = { x: 0, y: 0 }; // 一度使ったらリセット
+        setMoveDirection(0, 0); // 一度使ったらリセット
       } else {
         moveDirection = { x: 0, y: 0 };
       }
