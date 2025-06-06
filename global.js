@@ -23,5 +23,6 @@ export const gamma = 0.3;
 
 export const initConductanceValue = 0.8;
 
+export const growedThicknessThreshold = 0.5;
 export const edgeDrawRatio = 6;
 export const maxFrameCount = 350;

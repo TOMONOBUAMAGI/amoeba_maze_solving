@@ -1,6 +1,6 @@
 import Graph from 'https://esm.sh/graphology';
 import betweenness from 'https://esm.sh/graphology-metrics/centrality/betweenness';
-import { mazeWidth, mazeHeight, wallSize, qH, mu } from './global.js';
+import { mazeWidth, mazeHeight, wallSize, qH, mu, growedThicknessThreshold } from './global.js';
 
 // 迷路ランダム生成
 function ConstructMaze() {
@@ -38,6 +38,8 @@ function ConstructMaze() {
   return returnArray;
 }
 
+export const mazeArray = ConstructMaze();
+
 // 各マスについて、ノードかエッジかを判定
 export function judgeNodeEdge(mazeArray) {
   let judgedArray = Array(mazeHeight).fill(null).map(() => new Array(mazeWidth).fill(-1));
@@ -70,7 +72,7 @@ export function judgeNodeEdge(mazeArray) {
   return [judgedArray, nodeArray, graph];
 }
 
-// 円と矩形の衝突判定
+// 当たり判定
 export function checkCollision(circle, wall) {
   var circleX = circle.x;
   var circleY = circle.y;
@@ -92,6 +94,14 @@ export function checkCollision(circle, wall) {
 
   // 円の半径と距離が一致したら衝突
   return distance < radius;
+}
+
+// プレイヤー移動方向を外部ボタンで制御するためのグローバル変数
+export let externalMoveDirection = { x: 0, y: 0 };
+
+// ボタンで円形を操作するための変数
+export function setMoveDirection(x, y) {
+  externalMoveDirection = { x, y };
 }
 
 // sourceからの最短距離を幅優先探索で算出
@@ -138,12 +148,14 @@ export function setThickness(edgeArray, conductanceArray) {
   });
 }
 
-export const mazeArray = ConstructMaze();
+export function sumEdgeLength(edgeArray) {
+  var sumLength = 0;
+  edgeArray.forEach( edge => {
+    if (edge.thickness > growedThicknessThreshold) {
+      sumLength += edge.length;
+    }
+  });
 
-// プレイヤー移動方向を外部ボタンで制御するためのグローバル変数
-export let externalMoveDirection = { x: 0, y: 0 };
-
-// ボタンで方向セット
-export function setMoveDirection(x, y) {
-  externalMoveDirection = { x, y };
+  console.log(sumLength);
+  return sumLength;
 }

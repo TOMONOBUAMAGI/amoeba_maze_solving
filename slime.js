@@ -1,4 +1,4 @@
-import { judgeNodeEdge, nodeBFS, getBetweenness, sigmoidFunc, setThickness } from './functions.js';
+import { judgeNodeEdge, nodeBFS, getBetweenness, sigmoidFunc, setThickness, sumEdgeLength } from './functions.js';
 import { wallSize, mazeWidth, mazeHeight, initConductanceValue, edgeDrawRatio, dt, gamma, maxFrameCount } from './global.js';
 
 const slimeCanvas = document.querySelector('#slime-canvas');
@@ -66,6 +66,7 @@ function drawEdge(edgeArray) {
 function nextFrame() {
   if(frameCount >= maxFrameCount) {
     simulationStartBtn.textContent = 'finished';
+    sumEdgeLength(edgeArray);
     return;
   }
 
