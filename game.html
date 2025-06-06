@@ -67,10 +67,10 @@
       if (event.data.type === 'maze-data') {
         window.mazeArray = event.data.maze;
 
-        // データを受け取った後に main.js を読み込む
+        // データを受け取った後に game.js を読み込む
         const script = document.createElement('script');
         script.type = 'module';
-        script.src = 'main.js';
+        script.src = 'game.js';
         document.body.appendChild(script);
       }
     });
