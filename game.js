@@ -91,7 +91,7 @@ phina.define('MainScene', {
           lastPosition = { x: myCircle.x, y: myCircle.y };
 
           //プレーヤーがゴールした時の移動距離の取得
-          if(myCircle.x == 28+wallSize+18*wallSize && myCircle.y == 20+wallSize+18*wallSize){
+          if(myCircle.x == 28+(mazeWidth-2)*wallSize && myCircle.y == 20+(mazeHeight-2)*wallSize){
             console.log(this.trails.length);
           }
         }
