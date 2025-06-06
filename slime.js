@@ -64,7 +64,10 @@ function drawEdge(edgeArray) {
 }
 
 function nextFrame() {
-  if(frameCount >= maxFrameCount) return;
+  if(frameCount >= maxFrameCount) {
+    simulationStartBtn.textContent = 'finished';
+    return;
+  }
 
   frameCount++;
   conductanceMatrix = math.matrix(math.diag(conductanceArray)); // コンダクタンス行列D edge数行 対角 流量計算用
@@ -93,13 +96,6 @@ function nextFrame() {
 
   animationFrame = requestAnimationFrame(nextFrame);
 }
-
-// ボタンクリックでシミュレーション開始
-simulationStartBtn.addEventListener('click', function (e) {
-  e.target.disabled = true;
-  // 繰り返し処理開始
-  animationFrame = requestAnimationFrame(nextFrame);
-});
 
 drawWall();
 
@@ -196,3 +192,11 @@ setThickness(edgeArray, conductanceArray);
 drawEdge(edgeArray);
 
 frameCount = 0;
+
+// ボタンクリックでシミュレーション開始
+simulationStartBtn.addEventListener('click', function () {
+  simulationStartBtn.disabled = true;
+  simulationStartBtn.textContent = 'simulating...';
+  // 繰り返し処理開始
+  animationFrame = requestAnimationFrame(nextFrame);
+});

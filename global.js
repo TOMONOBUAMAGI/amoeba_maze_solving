@@ -24,4 +24,4 @@ export const gamma = 0.3;
 export const initConductanceValue = 0.8;
 
 export const edgeDrawRatio = 6;
-export const maxFrameCount = 500;
+export const maxFrameCount = 350;
