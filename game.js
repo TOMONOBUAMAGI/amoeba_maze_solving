@@ -1,7 +1,7 @@
 import { checkCollision, externalMoveDirection, setMoveDirection } from './functions.js';
 import { WIDTH, HEIGHT, wallSize, SPEED, mazeWidth, mazeHeight } from './global.js';
 
-const lengthText = window.parent.document.getElementById('game-route-length');
+const gameLengthText = window.parent.document.getElementById('game-route-length');
 const mazeArray = window.mazeArray;
 let wallArray = []; // 当たり判定用
 
@@ -93,7 +93,7 @@ phina.define('MainScene', {
 
           //プレーヤーがゴールした時の移動距離の取得
           if(myCircle.x == 28+(mazeWidth-2)*wallSize && myCircle.y == 20+(mazeHeight-2)*wallSize){
-            lengthText.textContent = this.trails.length;
+            gameLengthText.textContent = this.trails.length;
           }
         }
       }

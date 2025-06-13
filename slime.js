@@ -6,6 +6,8 @@ const simulationStartBtn = document.getElementById('simulation-start-button');
 const slimeCanvasWidth = slimeCanvas.width;
 const slimeCanvasHeight = slimeCanvas.height;
 
+const slimeLengthText = document.getElementById('slime-route-length');
+
 const ctx = slimeCanvas.getContext('2d');
 
 const mazeArray = window.mazeArray;
@@ -66,7 +68,8 @@ function drawEdge(edgeArray) {
 function nextFrame() {
   if(frameCount >= maxFrameCount) {
     simulationStartBtn.textContent = 'finished';
-    sumEdgeLength(edgeArray);
+    var sumLength = sumEdgeLength(edgeArray);
+    slimeLengthText.textContent = sumLength;
     return;
   }
 

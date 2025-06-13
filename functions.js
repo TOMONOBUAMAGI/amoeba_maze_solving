@@ -156,6 +156,5 @@ export function sumEdgeLength(edgeArray) {
     }
   });
 
-  console.log(sumLength);
   return sumLength;
 }
