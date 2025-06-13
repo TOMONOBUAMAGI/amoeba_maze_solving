@@ -1,8 +1,8 @@
 import { judgeNodeEdge, nodeBFS, getBetweenness, sigmoidFunc, setThickness, sumEdgeLength } from './functions.js';
 import { wallSize, mazeWidth, mazeHeight, initConductanceValue, edgeDrawRatio, dt, gamma, maxFrameCount } from './global.js';
 
-const slimeCanvas = document.querySelector('#slime-canvas');
-const simulationStartBtn = document.querySelector('#simulation-start-button')
+const slimeCanvas = document.getElementById('slime-canvas');
+const simulationStartBtn = document.getElementById('simulation-start-button');
 const slimeCanvasWidth = slimeCanvas.width;
 const slimeCanvasHeight = slimeCanvas.height;
 
