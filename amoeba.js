@@ -1,14 +1,14 @@
 import { judgeNodeEdge, nodeBFS, getBetweenness, sigmoidFunc, setThickness, sumEdgeLength } from './functions.js';
 import { wallSize, mazeWidth, mazeHeight, initConductanceValue, edgeDrawRatio, dt, gamma, maxFrameCount } from './global.js';
 
-const slimeCanvas = document.getElementById('slime-canvas');
+const amoebaCanvas = document.getElementById('amoeba-canvas');
 const simulationStartBtn = document.getElementById('simulation-start-button');
-const slimeCanvasWidth = slimeCanvas.width;
-const slimeCanvasHeight = slimeCanvas.height;
+const amoebaCanvasWidth = amoebaCanvas.width;
+const amoebaCanvasHeight = amoebaCanvas.height;
 
-const slimeLengthText = document.getElementById('slime-route-length');
+const amoebaLengthText = document.getElementById('amoeba-route-length');
 
-const ctx = slimeCanvas.getContext('2d');
+const ctx = amoebaCanvas.getContext('2d');
 
 const mazeArray = window.mazeArray;
 let judgedNodeEdge = judgeNodeEdge(mazeArray);
@@ -69,7 +69,7 @@ function nextFrame() {
   if(frameCount >= maxFrameCount) {
     simulationStartBtn.textContent = 'finished';
     var sumLength = sumEdgeLength(edgeArray);
-    slimeLengthText.textContent = sumLength;
+    amoebaLengthText.textContent = sumLength;
     return;
   }
 
@@ -94,7 +94,7 @@ function nextFrame() {
 
   setThickness(edgeArray, conductanceArray);
 
-  ctx.clearRect(0, 0, slimeCanvasWidth, slimeCanvasHeight);
+  ctx.clearRect(0, 0, amoebaCanvasWidth, amoebaCanvasHeight);
   drawWall();
   drawEdge(edgeArray);
 
