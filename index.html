@@ -21,8 +21,19 @@
     <link rel="stylesheet" href="style.css">
   </head>
   <body>
-    <div style="display: flex; justify-content: center; flex-direction: column;">
-      <div style="display: flex; justify-content: center;">
+    <div style="display: flex; align-items: center; flex-direction: column;">
+        <h2 style="text-align: center;">ここは、粘菌が迷路を解く様子を再現した数理モデルを体感できるページです</h2>
+        <h3 style="text-align: center;">
+          ①「→」ボタンを押して、
+          <span style="color:red;">●</span>
+          を最短距離で
+          <span style="color:#ffd700;">■</span>
+          から
+          <span style="color:#87cefa;">■</span>
+          まで到達させよう！
+        </h3>
+      <div style="display: flex; justify-content: center; flex-direction: column;">
+
         <iframe
           id="game-iframe"
           src="game.html"
@@ -31,15 +42,19 @@
           style="border: 1px solid #ccc;"
         >
         </iframe>
-      </div>
-      <div style="display: flex; justify-content: center;">
-        <p>
-          経路長：
+        <p style="text-align: center">
+          あなたの経路長：
           <span id="game-route-length"></span>
+          マス
         </p>
+      </div>
+
+      <h3 style="text-align: center">②「Start」ボタンを押して、数理モデルが最短距離を算出する過程を見てみよう！</h5>
+      <div style="display: flex; justify-content: center;">
         <p>
           モデルが算出した最短距離：
           <span id="amoeba-route-length"></span>
+          マス
         </p>
       </div>
       <div id="amoeba-simulation">
@@ -47,6 +62,16 @@
         <button id="simulation-start-button">Start</button>
       </div>
     </div>
+
+    <div style="margin-top: 30px;">
+      <p style="text-align: center">
+        参考文献：
+        <a href="https://www.sciencedirect.com/science/article/abs/pii/S002251930600289X?via%3Dihub" target="_blank">
+          『A mathematical model for adaptive transport network in path finding by true slime mold』,
+          Journal of Theoretical Biology,
+          Volume 244, Issue 4
+        </a>
+      </p>
     <script src='GameClass/edge.js'></script>
     <script src='GameClass/node.js'></script>
     <script type="module" src='amoeba.js'></script>
