@@ -3,6 +3,13 @@ import { WIDTH, HEIGHT, wallSize, SPEED, mazeWidth, mazeHeight } from './global.
 
 const gameLengthText = window.parent.document.getElementById('game-route-length');
 const mazeArray = window.mazeArray;
+const startColor = "#ffd700";
+const goalColor = "#87cefa";
+
+const startX = 28+wallSize;
+const startY = 20+wallSize;
+const goalX = 28+(mazeWidth-2)*wallSize;
+const goalY = 20+(mazeHeight-2)*wallSize;
 let wallArray = []; // 当たり判定用
 
 phina.define('MainScene', {
@@ -15,8 +22,28 @@ phina.define('MainScene', {
 
     // 背景色を指定
     this.backgroundColor = '#EEEEEE';
+    // スタート地点を表す正方形
+    var start = phina.display.RectangleShape({
+      width: wallSize,
+      height: wallSize,
+      fill: startColor,
+      strokeWidth: 0,
+    }).addChildTo(this);
+
+    // ゴール地点を表す正方形
+    var goal = phina.display.RectangleShape({
+      width: wallSize,
+      height: wallSize,
+      fill: goalColor,
+      strokeWidth: 0,
+    }).addChildTo(this);
+
+    start.setPosition(startX, startY);
+    goal.setPosition(goalX, goalY);
+
     // 操作する円を配置
-    var myCircle = MyCircle(28+wallSize, 20+wallSize).addChildTo(this);
+    var myCircle = MyCircle(startX, startY).addChildTo(this);
+
     // 軌跡を描画するためのTrailインスタンスを格納する配列
     this.trails = [];
 
@@ -92,7 +119,7 @@ phina.define('MainScene', {
           lastPosition = { x: myCircle.x, y: myCircle.y };
 
           //プレーヤーがゴールした時の移動距離の取得
-          if(myCircle.x == 28+(mazeWidth-2)*wallSize && myCircle.y == 20+(mazeHeight-2)*wallSize){
+          if(myCircle.x == goalX && myCircle.y == goalY){
             gameLengthText.textContent = this.trails.length;
           }
         }
